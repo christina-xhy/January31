@@ -5,6 +5,6 @@ cd dist
 git init
 git add .
 git commit -m deploy
-git remote add origin git@github.com:FrankFang/react-mangosteen-1-preview.git
-git push -f origin master:master
+git remote add origin git@github.com:christina-xhy/January31.git
+git push -f origin main:main
 cd -

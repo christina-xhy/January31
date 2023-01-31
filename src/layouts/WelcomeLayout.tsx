@@ -22,21 +22,23 @@ export const WelcomeLayout: React.FC = () => {
     config: { duration: 300 }
   })
   return (
-    <div>
-      <header>
-        <img src={logo} />
-        <h1>记账</h1>
+    <div className='bg-#fda4af' h-screen flex flex-col
+      items-stretch pb-16px
+    >
+      <header shrink-0 text-center>
+        <img w-150px src={logo} />
+        <h1 text="indigo" text-30px>ali记账</h1>
       </header>
-     <main>
+     <main shrink-0 grow-1 bg-white mx-16px rounded-20px flex justify-center items-center>
       {transitions((style, pathname) =>
         <animated.div key={pathname} style={style}>
           {map.current[pathname]}
         </animated.div>
       )}
      </main>
-      <footer>
-        <Link to='/welcome/2'>下一页</Link>
-        <Link to='/welcome/xxx'>跳转</Link>
+      <footer shrink-0 text-center text-white grid grid-cols-3 grid-rows-1>
+        <Link style={{gridArea:'1/2/2/3'}} to='/welcome/2'>下一页</Link>
+        <Link style={{gridArea:'1/3/2/4'}}to='/welcome/xxx'>跳转</Link>
       </footer>
     </div>
   )
