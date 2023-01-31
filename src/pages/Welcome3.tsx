@@ -1,14 +1,12 @@
-import * as React from 'react'
+import page from '../assets/images/welcome3.svg'
 export const Welcome3: React.FC = () => {
   return (
-    <div flex justify-center items-center
-      after="content-[hi] b-1 b-red"
-      before="content-[hi] b-1 b-red"
-      shadow
-    >
-      <header hover:bg-red w-100px b-1 b-red h-40px></header>
-      <main grow-1 b-1 b-blue h-100px></main>
-      <footer w-200px b-1 b-black h-55px></footer>
+    <div>
+      <img src = {page}/>
+      <h2 text-center>
+        数据可视化<br/>
+        收支一目了然
+      </h2>
     </div>
   )
 }
