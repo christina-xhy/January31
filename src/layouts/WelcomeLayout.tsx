@@ -3,7 +3,7 @@ import type { ReactNode } from 'react'
 import { useRef, useState} from 'react'
 import { Link, useLocation, useOutlet } from 'react-router-dom'
 import logo from '../assets/images/logo.svg'
-const linkMap = {
+const linkMap:Record<string,string> = {
   '/welcome/1':'/welcome/2',
   '/welcome/2':'/welcome/3',
   '/welcome/3':'/welcome/4',
@@ -13,7 +13,7 @@ const linkMap = {
 export const WelcomeLayout: React.FC = () => {
   const location = useLocation()
   const outlet = useOutlet()
-  const [extraStyle,setExtraStyle] = useState({position:'relative'})
+  const [extraStyle, setExtraStyle] = useState<{position:'relative' | 'absolute'}>({position:'relative'})
   const map = useRef<Record<string, ReactNode>>({})
   map.current[location.pathname] = outlet
   const transitions = useTransition(location.pathname, {
@@ -27,19 +27,16 @@ export const WelcomeLayout: React.FC = () => {
     onRest: () =>{
       setExtraStyle({position:'relative'})
     }
-
   })
   return (
-    <div className='bg-#fda4af' h-screen flex flex-col
-      items-stretch pb-16px
-    >
-      <header shrink-0 text-center >
+    <div className='bg-#fda4af' h-screen flex flex-col items-stretch pb-16px>
+      <header shrink-0 text-center pt-1px >
         <img w-150px h-100px src={logo} />
         <h1 text="indigo" text-26px>ali记账</h1>
       </header>
      <main shrink-1 grow-1 mx-16px relative >
       {transitions((style, pathname) =>
-        <animated.div key={pathname} style={{ ...style, ...extraStyle}}  w='100%' h='100%' flex >
+        <animated.div key={pathname} style={{...style,...extraStyle}}  w='100%' h='100%' flex >
           <div grow-1 bg-white flex justify-center items-center rounded-20px >
             {map.current[pathname]}
           </div>
