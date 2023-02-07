@@ -33,10 +33,12 @@ export const WelcomeLayout: React.FC = () => {
       setExtraStyle({ position: 'relative' })
     }
   })
+  
     const {setHasReadWelcomes} = useLocalStore()
     const onSkip = ()=>{
       setHasReadWelcomes(true)
     }
+
     const nav = useNavigate()
     const main = useRef<HTMLElement>(null)//html元素类型
     const {direction} = useSwipe(main,{onTouchStart: e => e.preventDefault()})

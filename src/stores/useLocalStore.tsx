@@ -6,7 +6,7 @@ interface Local{
 }
 const init = localStorage.getItem('hasReadWelcomes')
 export const useLocalStore = create<Local>((set) => {
-  return {
+  return { 
     hasReadWelcomes: init === 'yes',
     setHasReadWelcomes:(read:boolean) =>{
       const result = read ? 'yes' : 'no'
