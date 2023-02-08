@@ -1,8 +1,19 @@
 import { useLocalStore } from "../stores/useLocalStore";
 import pig from '../assets/images/pig.svg'
 import add from '../assets/images/add.svg'
+import useSWR from 'swr'
+import { ajax } from "../lib/ajax";
 
 export const Home : React.FC = () => {
+   const {data: meData,error: meError} = useSWR('/api/v1/me',(path) => {
+    return ajax.get(path)
+   })
+   const {data: itemsData,error: itemsError} = useSWR(meData ? '/api/v1/items' : null,(path) => {
+    return ajax.get(path)
+   })
+   // dev 访问本地mock服务器，build 访问真实的远程服务器
+   console.log(meData,meError,itemsData,itemsError)
+
   return <div>
     <div flex justify-center items-center>
       <img mt-20vh mb-20vh width= '98' height= '100' src={pig}/>
