@@ -5,10 +5,16 @@ export default [
   {
     url: '/api/v1/me',
     method: 'get',
-    response: () => {
+    timeout:2000,
+    response: ():Resource<User> => {
       return {
-        id: 1,
-        email: 'frank@frank.com'
+        resource:{
+          id: 1,
+          email: 'frank@frank.com',
+          name:'frank',
+          updated_at:'2022-02-08T00:00:00.000Z',
+          created_at:'2022-02-08T00:00:00.000Z',
+        }
       }
     },
   },
@@ -16,12 +22,17 @@ export default [
     url: '/api/v1/items',
     method: 'get',
     timeout: 2000,
-    response: () => {
+    response: ():Resources<Item> => {
       return {
-        resorces:[{
+        resources:[{
             id:1,
             user_id:1,
             amount:1000,
+            tag_ids: [1,2],
+            happen_at: '2022-02-08T00:00:00.000Z',
+            created_at: '2022-02-08T00:00:00.000Z',
+            updated_at: '2022-02-08T00:00:00.000Z',
+            kind: 'expense',
         }],
         pager:{
             page:1,
