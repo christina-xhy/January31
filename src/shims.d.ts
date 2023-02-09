@@ -11,6 +11,6 @@ declare module 'react' {
     w?: string
     h?: string
     bg?:string
-    fixed:boolean
+    fixed?:boolean
   }
 }

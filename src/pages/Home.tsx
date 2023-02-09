@@ -1,11 +1,18 @@
 import { useLocalStore } from "../stores/useLocalStore";
 import pig from '../assets/images/pig.svg'
-import add from '../assets/images/add.svg'
+import { AddItemFloatButton } from "../components/AddItmeFloatButton";
 import useSWR from 'swr'
 import { ajax } from "../lib/ajax";
 import { Navigate } from "react-router-dom";
+import { Loading } from "../components/Loading";
+import { useEffect } from "react";
+import { useTitle } from "../hooks/useTitle";
 
-export const Home : React.FC = () => {
+interface Props{
+  title?:string
+}
+export const Home : React.FC<Props> = (props) => {
+    useTitle(props.title)
    const {data: meData,error: meError} = useSWR('/api/v1/me',async path => 
     (await ajax.get<Resource<User>>(path)).data.resource
    )
@@ -17,7 +24,7 @@ export const Home : React.FC = () => {
    const isLoadingMe = !meData && !meError
    const isLoadingItems = meData && !meData && !meError
    if (isLoadingMe){
-    return <div>加载ing...</div>
+    return <Loading />
    }
    //判断用户是否记过账
    if(itemsData?.resources[0]){
@@ -34,10 +41,7 @@ export const Home : React.FC = () => {
         rounded-8px
         >开始记账</button>
       </div>
-      <button w-56px h-56px bg="#5C33BE"  text-white rounded-50px 
-        text-6xl  fixed bottom-16px right-16px>
-        <img src={add} max-w = "100%" max-h="100%" />
-      </button>
+      <AddItemFloatButton />
     </div>
   )
 }
