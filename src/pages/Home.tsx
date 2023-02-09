@@ -5,7 +5,6 @@ import useSWR from 'swr'
 import { ajax } from "../lib/ajax";
 import { Navigate } from "react-router-dom";
 import { Loading } from "../components/Loading";
-import { useEffect } from "react";
 import { useTitle } from "../hooks/useTitle";
 
 interface Props{
@@ -19,8 +18,8 @@ export const Home : React.FC<Props> = (props) => {
    const {data: itemsData,error: itemsError} = useSWR(meData ? '/api/v1/items' : null,async path => 
     (await ajax.get<Resources<Item>>(path)).data
    )
-   // dev 访问本地mock服务器，build 访问真实的远程服务器
-   console.log(meData,meError,itemsData,itemsError)
+   // dev 访问本地mock服务器，build 访问真实的远程服务器 配置vite.config.ts define(command === serve)
+
    const isLoadingMe = !meData && !meError
    const isLoadingItems = meData && !meData && !meError
    if (isLoadingMe){
