@@ -23,7 +23,7 @@ export const Home : React.FC<Props> = (props) => {
    const isLoadingMe = !meData && !meError
    const isLoadingItems = meData && !meData && !meError
    if (isLoadingMe){
-    return <Loading className="h-screen" message="数据正在加载，请稍等"/>
+    return <Loading className="h-screen" message="数据正在加载，请稍等..."/>
    }
    //判断用户是否记过账
    if(itemsData?.resources[0]){
@@ -36,7 +36,7 @@ export const Home : React.FC<Props> = (props) => {
         <img mt-20vh mb-20vh width= '98' height= '100' src={pig}/>
       </div>
       <div px-16px>
-        <button h-48px w='100%' bg='#5C33BE' text-white b-none
+        <button h-48px w='100%' bg='#fda4af' text-white b-none
         rounded-8px
         >开始记账</button>
       </div>

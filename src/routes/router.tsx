@@ -7,6 +7,7 @@ import { Welcome3 } from '../pages/Welcome3'
 import { Welcome4 } from '../pages/Welcome4'
 import { WelcomeLayout } from '../layouts/WelcomeLayout'
 import { Home } from '../pages/Home'
+import { ItemsPage } from '../pages/ItemsPage'
 
 export const router = createBrowserRouter([
   {
@@ -30,6 +31,6 @@ export const router = createBrowserRouter([
   },
   {
     path:'/items',
-    element: <div> items </div>
+    element: <ItemsPage title='记账页面'/>
   },
 ])

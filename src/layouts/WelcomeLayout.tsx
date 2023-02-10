@@ -50,7 +50,7 @@ export const WelcomeLayout: React.FC = () => {
       }
     },[direction,location.pathname,linkMap])
   return (
-    <div className="bg-#5f34bf" h-screen flex flex-col items-stretch pb-16px>
+    <div className="bg-#fda4af" h-screen flex flex-col items-stretch pb-16px>
       <header shrink-0 text-center pt-64px>
         <img src={logo} w-64px h-69px />
         <h1 text="#D4D4EE" text-32px>ali记账</h1>
