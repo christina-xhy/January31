@@ -5,7 +5,7 @@ export default [
   {
     url: '/api/v1/me',
     method: 'get',
-    timeout:2000,
+    timeout:10000,
     response: ():Resource<User> => {
       return {
         resource:{
