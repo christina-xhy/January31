@@ -35,13 +35,15 @@ const timeRanges: { key: TimeRange; text: string }[] = [
   { key: 'thisYear', text: '今年' },
   { key: 'custom', text: '自定义时间' },
 ]
+
+
 export const TimeRangePicker: React.FC<Props> = ({ selected, onSelected }) => {
   return (
-    <ol flex text-white children-px-24px children-py-12px cursor-pointer>
+    <ul flex text-white children-px-24px children-py-12px cursor-pointer>
       {timeRanges.map(tr => <li key={tr.key} className={tr.key === selected ? s.selected : ''}
         onClick={() => onSelected(tr.key)}>
         {tr.text}
       </li>)}
-    </ol>
+    </ul>
   )
 }
