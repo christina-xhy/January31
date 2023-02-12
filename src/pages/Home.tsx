@@ -1,4 +1,3 @@
-import { useLocalStore } from "../stores/useLocalStore";
 import pig from '../assets/images/pig.svg'
 import { AddItemFloatButton } from "../components/AddItmeFloatButton";
 import useSWR from 'swr'
