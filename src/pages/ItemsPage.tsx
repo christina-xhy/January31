@@ -29,7 +29,7 @@ export const ItemsPage : React.FC<Props> = (props) => {
       <ItemsSummary />
       <ItemsList />
       <AddItemFloatButton />
-      {visible ? <TopMeue onClickMask={()=>{setVisible(false)}}/> : null}
+      <TopMeue visible = {visible} onClickMask={()=>{setVisible(false)}}/> 
    </div>
   )
 }
