@@ -25,13 +25,13 @@ export const TopMeue : React.FC<Props> = ( props ) => {
   })
   const menuStyle = useSpring({
     opacity: visible ? 1 : 0,
-    transform: visible ? 'transilateX(0)' : 'translateX(-100%)',
+    transform: visible ? 'transilateX(0%)' : 'translateX(-100%)',
   })
-  const x = {...maskStyle,visibility: (maskVisible ? 'visible' : 'hidden') as 'visible' | 'hidden'}
+  const styles = {...maskStyle,visibility: (maskVisible ? 'visible' : 'hidden') as 'visible' | 'hidden'}
   return (
     <>
       <animated.div fixed top-0 left-0 w='100%' h='100%' bg='[rgba(0,0,0,0.75)]'
-        style = {x}
+        style = {styles}
         z='[calc(var(--z-menu)-1)]' onClick={onClickMask} />
       
       <animated.div fixed top-0 left-0 w='70vw'max-w-20em h-screen  flex flex-col z='[var(--z-menu)]'
