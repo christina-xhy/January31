@@ -8,7 +8,6 @@ export const ItemsList : React.FC<Props> = () => {
   const {data,error} =useSWRInfinite(
     getKey,async (path)=>(await ajax.get<Resources<Item>>(path)).data
   )
-
   console.log(data,error)
   const items: Item[] =[]
   return(
