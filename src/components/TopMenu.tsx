@@ -9,7 +9,7 @@ interface Props{
 }
 export const TopMeue : React.FC<Props> = ( props ) => {
   const { onClickMask,visible } = props
-  const [maskVisible,setMaskVisible ] = useState(false)
+  const [maskVisible,setMaskVisible ] = useState(visible)
   const maskStyle = useSpring({
     opacity: visible ? 1 : 0,
     onStart:({value}) =>{
