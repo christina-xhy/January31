@@ -19,42 +19,7 @@ const Div = styled.div`
 export const ItemsPage : React.FC<Props> = (props) => {
     useTitle(props.title)
     const [timeRange,setTimeRange] = useState<TimeRange>('thisMonth')
-    const [items] = useState<Item[]>([
-      {
-        id: 1,
-        amount: 1000,
-        note: 'string',
-        tag_ids: [1],
-        happen_at: '2023-02-11T00:00.000Z',
-        created_at: '2023-02-11T00:00.000Z',
-        updated_at: '2023-02-1T00:00.000Z',
-        kind: 'incomes',
-        user_id: 1
-      },
-      {
-        id: 2,
-        amount: 1000,
-        note: 'string',
-        tag_ids: [2],
-        happen_at: '2023-02-11T00:00.000Z',
-        created_at: '2023-02-11T00:00.000Z',
-        updated_at: '2023-02-11T00:00.000Z',
-        kind: 'incomes',
-        user_id: 2
-      },
-      {
-        id: 3,
-        amount: 1000,
-        note: 'string',
-        tag_ids: [3],
-        happen_at: '2023-02-11T00:00.000Z',
-        created_at: '2023-02-11T00:00.000Z',
-        updated_at: '2023-02-11T00:00.000Z',
-        kind: 'incomes',
-        user_id: 3
-      }
-    ])
-    const {visible} = useMenuStore()
+    const {visible,setVisible} = useMenuStore()
   return (
    <div>
       <Div>
@@ -62,9 +27,9 @@ export const ItemsPage : React.FC<Props> = (props) => {
         <TimeRangePicker  selected = {timeRange} onSelected={setTimeRange} />
       </Div>
       <ItemsSummary />
-      <ItemsList items={items}/>
+      <ItemsList />
       <AddItemFloatButton />
-      {visible ? <TopMeue/> : null}
+      {visible ? <TopMeue onClickMask={()=>{setVisible(false)}}/> : null}
    </div>
   )
 }

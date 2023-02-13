@@ -20,7 +20,6 @@ export const Home : React.FC<Props> = (props) => {
    // dev 访问本地mock服务器，build 访问真实的远程服务器 配置vite.config.ts define(command === serve)
 
    const isLoadingMe = !meData && !meError
-   const isLoadingItems = meData && !meData && !meError
    if (isLoadingMe){
     return <Loading className="h-screen" message="数据正在加载，请稍等..."/>
    }

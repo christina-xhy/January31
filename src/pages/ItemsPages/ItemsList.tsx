@@ -9,6 +9,8 @@ export const ItemsList : React.FC<Props> = () => {
     getKey,async (path)=>(await ajax.get<Resources<Item>>(path)).data
   )
   console.log(data,error)
+
+
   const items: Item[] =[]
   return(
   <div>

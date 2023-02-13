@@ -13,6 +13,6 @@ export default defineConfig(({ command })=> ({
     Unocss(),
     react(),
     viteMockServe(),
-    svgsprites()
+    svgsprites({ noOptimizedList : ['chart','category','export','notice']})
   ]
 }))
