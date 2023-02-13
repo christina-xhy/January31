@@ -13,6 +13,7 @@ declare module 'react' {
     bg?:string
     fixed?:boolean
     z?:string
+    block?:boolean
   }
   interface SVGProps<T> extends SVGAttributes<T>, ClassAttributes<T> {
     w?:string
