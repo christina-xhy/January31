@@ -20,7 +20,7 @@ export const TopMeue : React.FC<Props> = ( props ) => {
     onRest:({value}) =>{
       if(value.opacity < 0.1){
         setMaskVisible(false)
-      }
+      } 
     }
   })
   const menuStyle = useSpring({
