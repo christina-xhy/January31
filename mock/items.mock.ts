@@ -1,5 +1,6 @@
 import { MockMethod } from "vite-plugin-mock";
 import { ResponseParams } from "./mock";
+import { faker } from '@faker-js/faker';
 
 let id = 0
 const createId = () => {
@@ -10,11 +11,11 @@ const create = (attr?:Partial<Item>) : Item => {
     return {
         id: createId(),
         user_id:1,
-        amount : 1000,
+        amount : faker.datatype.number({ min: 10, max: 1000_00}),
         tag_ids:[1,2],
-        happen_at:'2023-02-14T00:00:00.000Z',
-        created_at:'2023-02-14T00:00:00.000Z',
-        updated_at:'2023-02-14T00:00:00.000Z',
+        happen_at:faker.date.past().toISOString(),
+        created_at:faker.date.past().toISOString(),
+        updated_at:faker.date.past().toISOString(),
         kind:'expense',
         ...attr
         }
