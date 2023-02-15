@@ -74,7 +74,6 @@ export const ItemsList : React.FC<Props> = () => {
       </ol>
       {error && <Div>数据加载失败，请刷新页面</Div>}
       
-
       {!hasMore 
         ? <Div>没有更多数据了</Div>
         : isLoading
