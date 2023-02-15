@@ -30,7 +30,6 @@ export const ItemsList : React.FC<Props> = () => {
   const isLoadingInitialData = !data && !error
   const isLoadingMore = data?.[size -1] === undefined && !error
   const isLoading = isLoadingInitialData || isLoadingMore
-console.log("loading: " + isLoading);
 
   if(!data){
     return (
@@ -43,8 +42,6 @@ console.log("loading: " + isLoading);
     const last = data[data.length -1]
     const {page,per_page, count} = last.pager
     const hasMore = (page - 1) * per_page + last.resources.length < count
-
-    console.log('isLoading' + isLoading);
     
     return (
     <>
