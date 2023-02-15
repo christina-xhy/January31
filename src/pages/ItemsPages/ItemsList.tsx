@@ -1,5 +1,11 @@
+import styled from 'styled-components'
 import useSWRInfinite from 'swr/infinite'
 import { ajax } from '../../lib/ajax'
+
+const Div = styled.div`
+  padding:16px;
+  text-align: center;
+`
 //一、 确定请求的次数  二、返回请求的网页页面
 const getKey = (pageIndex:number,prev: Resources<Item>) =>{
   if(prev){
@@ -10,6 +16,9 @@ const getKey = (pageIndex:number,prev: Resources<Item>) =>{
   return `/api/v1/items?page=${pageIndex + 1}`
 } //返回当前请求的页码 + 如果没有前一页，一定发送第一页请求
 
+interface Props {
+
+}
 export const ItemsList : React.FC<Props> = () => {
   const {data,error,size,setSize} =useSWRInfinite(
     getKey,async (path)=>(await ajax.get<Resources<Item>>(path)).data
@@ -17,13 +26,26 @@ export const ItemsList : React.FC<Props> = () => {
   const onLoadMore = () =>{
     setSize(size + 1)
   }
+  //优化加载页面
+  const isLoadingInitialData = !data && !error
+  const isLoadingMore = data?.[size -1] === undefined && !error
+  const isLoading = isLoadingInitialData || isLoadingMore
+console.log("loading: " + isLoading);
 
   if(!data){
-    return <span>not success</span>
+    return (
+      <Div >
+        {error && <div>not success</div>}
+        {isLoading && <Div>数据正在加载中...</Div>}
+      </Div>
+    )
   }else{    
     const last = data[data.length -1]
     const {page,per_page, count} = last.pager
     const hasMore = (page - 1) * per_page + last.resources.length < count
+
+    console.log('isLoading' + isLoading);
+    
     return (
     <>
       <ol>
@@ -53,11 +75,14 @@ export const ItemsList : React.FC<Props> = () => {
           })
         }
       </ol>
-
+      {error && <Div>数据加载失败，请刷新页面</Div>}
       
-        {hasMore 
-        ? <div p-16px text-center> <button j-btn onClick = { onLoadMore }>加载更多...</button></div>
-        : <div text-center>没有更多数据了</div>}
+
+      {!hasMore 
+        ? <Div>没有更多数据了</Div>
+        : isLoading
+        ? <Div>数据正在加载中...</Div>
+        : <Div> <button j-btn onClick = { onLoadMore }>加载更多</button></Div>}
     </>
     )
   }

@@ -45,7 +45,8 @@ const create = (attr?:Partial<Item>) : Item => {
  export const itemsMock : MockMethod = {
     url: '/api/v1/items',
     method: 'get',
-    timeout: 200,
+    statusCode:200,
+    timeout: 100,
     response: ( {query} : ResponseParams ):Resources<Item> => {
       return createResponse({count:30,perPage:10,page:parseInt(query.page)})
     }
