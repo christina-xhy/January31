@@ -1,16 +1,29 @@
-import { FormEventHandler } from "react"
-import { Gradient } from "../components/Gradient"
-import { Icon } from "../components/Icon"
-import { TopNav } from "../components/TopNav"
-import { useSignInStore } from "../stores/useSignInStore"
+import type { FormEventHandler } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { Gradient } from '../components/Gradient'
+import { Icon } from '../components/Icon'
+import { TopNav } from '../components/TopNav'
+import { ajax } from '../lib/ajax'
+import { hasError, validate } from '../lib/validate'
+import { useSignInStore } from '../stores/useSignInStore'
 
-export const SignInPage : React.FC = () => {
-    const {data,setData} = useSignInStore()
-    const onSubmit :FormEventHandler<HTMLFormElement> = (e) => {
-        e.preventDefault()
+export const SignInPage: React.FC = () => {
+  const nav = useNavigate()
+  const { data, error, setError, setData } = useSignInStore()
+  const onSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
+    e.preventDefault()
+    const error = validate(data, [
+      { key: 'email', type: 'required', message: '请输入邮箱地址' },
+      { key: 'email', type: 'pattern', regex: /^.+@.+$/, message: '邮箱地址格式不正确' },
+      { key: 'code', type: 'required', message: '请输入验证码' },
+      { key: 'code', type: 'length', min: 6, max: 6, message: '验证码必须是6个字符' },
+    ])
+    setError(error)
+    if (!hasError(error)) {
+      await ajax.post('/api/v1/session', data)
+      nav('/home')
     }
-    console.log(data);
-    
+  }
   return (
    <div>
          <Gradient>
@@ -22,16 +35,16 @@ export const SignInPage : React.FC = () => {
         </div>
         <form j-form onSubmit={onSubmit}>
             <div>
-                <span j-form-label >邮箱地址</span>
-                <input j-input-text rounded-8px type='text' placeholder="请输入邮箱，然后点击发送验证码" 
-                value={data.email} onChange = {e => setData({email:e.target.value})}
+                <span j-form-label >邮箱地址 {error.email?.[0] && <span text-red >{error.email[0]}</span>}</span>
+                <input j-input-text rounded-8px type='text' placeholder="请输入邮箱，然后点击发送验证码"
+                value={data.email} onChange = {e => setData({ email: e.target.value })}
                 />
             </div>
             <div>
-                <span j-form-label>验证码</span>
+                <span j-form-label>验证码 {error.code?.[0] && <span text-red >{error.code[0]}</span>}</span>
                 <div flex>
-                    <input j-input-text rounded-8px type='text' placeholder='6位数字' 
-                    value ={data.code} onChange = {e => setData({code:e.target.value})}/>
+                    <input j-input-text rounded-8px type='text' placeholder='6位数字'
+                    value ={data.code} onChange = {e => setData({ code: e.target.value })}/>
                     <button j-btn ml-16px>发送验证码</button>
                 </div>
             </div>

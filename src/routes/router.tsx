@@ -1,4 +1,4 @@
-import { createBrowserRouter, Outlet } from 'react-router-dom'
+import { createBrowserRouter } from 'react-router-dom'
 import { NotFoundPage } from '../pages/NotFoundPage'
 import { Root } from '../components/Root'
 import { Welcome1 } from '../pages/Welcome1'
@@ -12,12 +12,12 @@ import { SignInPage } from '../pages/SignInPage'
 
 export const router = createBrowserRouter([
   {
-    path:'/',
+    path: '/',
     element: <Root />
   },
   {
-    path:'/home',
-    element:<Home title = '首页'/>
+    path: '/home',
+    element: <Home title = '首页'/>
   },
   {
     path: '/welcome',
@@ -31,12 +31,12 @@ export const router = createBrowserRouter([
     ],
   },
   {
-    path:'/items',
+    path: '/items',
     element: <ItemsPage title='记账页面'/>
   },
-  {path:'/sign_in', element: <SignInPage /> },
-  {path:'/chart', element: <div>图表</div> },
-  {path:'/export', element: <div>敬请期待</div> },
-  {path:'/tags', element: <div>标签</div> },
-  {path:'/notice', element: <div>敬请期待</div> },
+  { path: '/sign_in', element: <SignInPage /> },
+  { path: '/chart', element: <div>图表</div> },
+  { path: '/export', element: <div>敬请期待</div> },
+  { path: '/tags', element: <div>标签</div> },
+  { path: '/notice', element: <div>敬请期待</div> },
 ])

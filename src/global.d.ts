@@ -30,3 +30,5 @@ interface Item {
     updated_at: string
     kind: 'expense' | 'incomes'
 }
+
+type JSONValue = boolean | number | string | null | { [k: string]: JSONValue } | JSONValue[]

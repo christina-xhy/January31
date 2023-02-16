@@ -1,11 +1,11 @@
-import { ReactNode } from "react"
+/* eslint-disable @typescript-eslint/quotes */
+import type { ReactNode } from "react"
 
-
-interface Props{
-  title?:string
-  icon:ReactNode
+interface Props {
+  title?: string
+  icon: ReactNode
 }
-export const TopNav : React.FC <Props>= ({title = 'ali记账' ,icon}) => {
+export const TopNav: React.FC <Props> = ({ title = 'ali记账', icon }) => {
   return (
     <div text-white flex items-center pt-24px py-8px px-24px >
       <span w-24px h-24px mr-16px flex justify-center items-center
