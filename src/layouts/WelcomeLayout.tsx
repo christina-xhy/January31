@@ -1,6 +1,6 @@
 import { animated, useTransition } from '@react-spring/web'
-import { ReactNode, useEffect } from 'react'
-import { useRef, useState } from 'react'
+import type { ReactNode } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link, useLocation, useNavigate, useOutlet } from 'react-router-dom'
 import logo from '../assets/images/logo.svg'
 import { useSwipe } from '../hooks/useSwipe'
@@ -10,12 +10,12 @@ const linkMap: Record<string, string> = {
   '/welcome/1': '/welcome/2',
   '/welcome/2': '/welcome/3',
   '/welcome/3': '/welcome/4',
-  '/welcome/4': '/welcome/xxx',
+  '/welcome/4': '/welcome/home',
 }
 
 export const WelcomeLayout: React.FC = () => {
   const animating = useRef(false)
-  const map = useRef<Record<string, ReactNode>>({})//hashmap类型
+  const map = useRef<Record<string, ReactNode>>({})// hashmap类型
   const location = useLocation()
   const outlet = useOutlet()
   map.current[location.pathname] = outlet
@@ -33,22 +33,23 @@ export const WelcomeLayout: React.FC = () => {
       setExtraStyle({ position: 'relative' })
     }
   })
-  
-    const {setHasReadWelcomes} = useLocalStore()
-    const onSkip = ()=>{
-      setHasReadWelcomes(true)
-    }
 
-    const nav = useNavigate()
-    const main = useRef<HTMLElement>(null)//html元素类型
-    const {direction} = useSwipe(main,{onTouchStart: e => e.preventDefault()})
-    useEffect(()=>{
-      if(direction === 'left'){
-        if(animating.current === true) {return}
-        animating.current = true
-        nav(linkMap[location.pathname])
-      }
-    },[direction,location.pathname,linkMap])
+  const { setHasReadWelcomes } = useLocalStore()
+  const onSkip = () => {
+    setHasReadWelcomes(true)
+  }
+
+  const nav = useNavigate()
+  const main = useRef<HTMLElement>(null)// html元素类型
+  const { direction } = useSwipe(main)
+
+  useEffect(() => {
+    if (direction === 'left') {
+      if (animating.current === true) { return }
+      animating.current = true
+      nav(linkMap[location.pathname])
+    }
+  }, [direction, location.pathname, linkMap])
   return (
     <div className="bg-#fda4af" h-screen flex flex-col items-stretch pb-16px>
       <header shrink-0 text-center pt-64px>

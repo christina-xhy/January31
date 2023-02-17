@@ -3535,6 +3535,11 @@
     "spdx-correct" "^3.0.0"
     "spdx-expression-parse" "^3.0.0"
 
+"vh-check@^2.0.5":
+  "integrity" "sha512-vHtIYWt9uLl2P2tLlatVpMwv9+ezuJCtMNjUVIpzd5Pa/dJXN8AtqkKmVRcNSlmXyCjkCkbMQX/Vs9axmdlfgg=="
+  "resolved" "https://registry.npmmirror.com/vh-check/-/vh-check-2.0.5.tgz"
+  "version" "2.0.5"
+
 "vite-plugin-mock@^2.9.6":
   "integrity" "sha512-/Rm59oPppe/ncbkSrUuAxIQihlI2YcBmnbR4ST1RA2VzM1C0tEQc1KlbQvnUGhXECAGTaQN2JyasiwXP6EtKgg=="
   "resolved" "https://registry.npmmirror.com/vite-plugin-mock/-/vite-plugin-mock-2.9.6.tgz"

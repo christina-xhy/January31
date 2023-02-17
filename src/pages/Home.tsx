@@ -1,32 +1,32 @@
-import pig from '../assets/images/pig.svg'
-import { AddItemFloatButton } from "../components/AddItmeFloatButton";
 import useSWR from 'swr'
-import { ajax } from "../lib/ajax";
-import { Navigate } from "react-router-dom";
-import { Loading } from "../components/Loading";
-import { useTitle } from "../hooks/useTitle";
+import { Navigate } from 'react-router-dom'
+import pig from '../assets/images/pig.svg'
+import { AddItemFloatButton } from '../components/AddItmeFloatButton'
+import { ajax } from '../lib/ajax'
+import { Loading } from '../components/Loading'
+import { useTitle } from '../hooks/useTitle'
 
-interface Props{
-  title?:string
+interface Props {
+  title?: string
 }
-export const Home : React.FC<Props> = (props) => {
-    useTitle(props.title)
-   const {data: meData,error: meError} = useSWR('/api/v1/me',async path => 
+export const Home: React.FC<Props> = (props) => {
+  useTitle(props.title)
+  const { data: meData, error: meError } = useSWR('/api/v1/me', async path =>
     (await ajax.get<Resource<User>>(path)).data.resource
-   )
-   const {data: itemsData,error: itemsError} = useSWR(meData ? '/api/v1/items' : null,async path => 
+  )
+  const { data: itemsData } = useSWR(meData ? '/api/v1/items' : null, async path =>
     (await ajax.get<Resources<Item>>(path)).data
-   )
-   // dev 访问本地mock服务器，build 访问真实的远程服务器 配置vite.config.ts define(command === serve)
+  )
+  // dev 访问本地mock服务器，build 访问真实的远程服务器 配置vite.config.ts define(command === serve)
 
-   const isLoadingMe = !meData && !meError
-   if (isLoadingMe){
+  const isLoadingMe = !meData && !meError
+  if (isLoadingMe) {
     return <Loading className="h-screen" message="数据正在加载，请稍等..."/>
-   }
-   //判断用户是否记过账
-   if(itemsData?.resources[0]){
+  }
+  // 判断用户是否记过账
+  if (itemsData?.resources[0]) {
     return <Navigate to = '/items' />
-   }
+  }
 
   return (
     <div>
