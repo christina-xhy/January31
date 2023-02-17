@@ -25,8 +25,8 @@ export const ItemsPage: React.FC<Props> = (props) => {
         <TopNav title ='账目列表' icon = {
         <Icon name='menu' className = 'w-24px h-24px' onClick={() => { setVisible(!visible) }}></Icon>
         }/>
-      <TimeRangePicker selected = {timeRange} onSelected={setTimeRange} />
       </Gradient>
+      <TimeRangePicker selected = {timeRange} onSelect={setTimeRange} />
       <ItemsSummary />
       <ItemsList />
       <AddItemFloatButton />
