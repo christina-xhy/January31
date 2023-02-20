@@ -1,17 +1,21 @@
-import { useState } from 'react'
 import { Icon } from '../../components/Icon'
+import { usePopup } from '../../hooks/usePopup'
+
 interface Props {
   className: string
 }
 export const DateAndAmount: React.FC<Props> = (props) => {
   const { className } = props
-  const [x, setX] = useState('')
+  const { popup, toggle } = usePopup()
   return (
     <div className={className}>
-        <div flex items-center p-t-15px p-b-16px px-16px border-t-1px border-t='#ddd' gap-x-8px>
-            <Icon className='shrink-0 grow-0 w-24px h-24px' name='date'/>
-            <span grow-0 shrink-0 text-12px >2023-2-20</span>
-            <code grow-1 shrink-1 text-right color='pink' >22223344444.766</code>
+         {popup}
+        <div flex p-t-15px p-b-16px px-16px border-t-1px border-t='#ddd' >
+            <span flex gap-x-8px items-center onClick={toggle}>
+                <Icon className='shrink-0 grow-0 w-24px h-24px' name='date'/>
+                <span grow-0 shrink-0 text-12px >2023-2-20</span>
+            </span>
+            <code grow-1 items-center shrink-1 text-right color='pink' >22223344444.766</code>
         </div>
        <div py-1px grid grid-cols='[repeat(4,1fr)]'grid-rows='[repeat(4,48px)]'
      children-b-none children-bg-white gap-x-1px gap-y-1px bg='#ddd'>

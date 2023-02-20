@@ -7,9 +7,7 @@ import './global.scss'
 import 'virtual:uno.css'
 import './app.scss'
 import 'virtual:svgsprites'
-const test = vhCheck()
-// eslint-disable-next-line no-console
-console.log(test)
+vhCheck()
 
 const div = document.getElementById('root') as HTMLElement
 

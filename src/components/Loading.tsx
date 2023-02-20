@@ -1,6 +1,6 @@
-import c from "classnames"
-import styled from "styled-components"
-import { Icon } from "./Icon"
+import c from 'classnames'
+import styled from 'styled-components'
+import { Icon } from './Icon'
 
 const Div = styled.div`
 @keyframes spin {
@@ -16,13 +16,13 @@ svg{
 }
 `
 
-interface Props{
-  className?:string
-  message?:string
+interface Props {
+  className?: string
+  message?: string
 }
-export const Loading : React.FC<Props> = ({className,message}) => {
+export const Loading: React.FC<Props> = ({ className, message }) => {
   return (
-    <Div className={c("flex flex-col justify-center items-center",className)}>
+    <Div className={c('flex flex-col justify-center items-center', className)}>
       <Icon name='loading' className="w-128px h-128px"/>
       <p p-8px text-lg>{message || '加载ing'}</p>
     </Div>
