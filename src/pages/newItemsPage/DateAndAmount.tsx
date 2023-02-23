@@ -1,19 +1,32 @@
+import { DatePicker } from 'antd-mobile'
+import dayjs from 'dayjs'
+import { useState } from 'react'
 import { Icon } from '../../components/Icon'
-import { usePopup } from '../../hooks/usePopup'
-
 interface Props {
   className: string
 }
 export const DateAndAmount: React.FC<Props> = (props) => {
   const { className } = props
-  const { popup, toggle } = usePopup()
+  const [createdAt, setCreatedAt] = useState(new Date())
+  const [visible, setVisible] = useState<boolean>(false)
+  const onChange = (value: object) => {
+    setCreatedAt(value)
+    console.log(value)
+  }
   return (
     <div className={className}>
-         {popup}
         <div flex p-t-15px p-b-16px px-16px border-t-1px border-t='#ddd' >
-            <span flex gap-x-8px items-center onClick={toggle}>
+            <span flex gap-x-8px items-center >
                 <Icon className='shrink-0 grow-0 w-24px h-24px' name='date'/>
-                <span grow-0 shrink-0 text-12px >2023-2-20</span>
+                <span grow-0 shrink-0 text-12px >
+                  <DatePicker visible={visible}
+                   onClose={() => { setVisible(false) }}
+                   onConfirm={(value) => { onChange({ createdAt: value }) }}
+                  />
+                   <div onClick={() => { setVisible(true) }}>
+                    <div>{dayjs(createdAt).format('YYYY-MM-DD')}</div>
+                  </div>
+                </span>
             </span>
             <code grow-1 items-center shrink-1 text-right color='pink' >22223344444.766</code>
         </div>

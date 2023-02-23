@@ -1,11 +1,14 @@
+import type { ReactNode } from 'react'
 import { useState } from 'react'
 import ReactDOM from 'react-dom'
 import { Popup } from '../components/Popup'
+import { rootDiv } from '../main'
 
-export const usePopup = () => {
+export const usePopup = (children: ReactNode) => {
   const [visible, setVisible] = useState(false)
-  const popup = ReactDOM.createPortal(<Popup visible={visible} onClickMask={() => setVisible(false)}/>,
-    document.body)
+  const popup = ReactDOM.createPortal(<Popup visible={visible} onClickMask={() => setVisible(false)}>
+    {children}
+  </Popup>, rootDiv)
   return (
     {
       popup,
@@ -17,8 +20,7 @@ export const usePopup = () => {
       },
       toggle() {
         setVisible(!visible)
-      }
+      },
     }
   )
 }
-
