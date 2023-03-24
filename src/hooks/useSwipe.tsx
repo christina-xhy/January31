@@ -7,11 +7,10 @@ interface Config {
 }
 export const useSwipe = (elementRef: RefObject<HTMLElement>, config?: Config) => {
   const [direction, setDirection] = useState<'' | 'left' | 'right' | 'up' | 'down'>('')
-  const x = useRef(-1) // number可以不写
+  const x = useRef(-1) 
   const y = useRef(-1)
   const onTouchStart = (e: TouchEvent) => {
     config?.onTouchStart?.(e)
-    e.preventDefault()
     x.current = e.touches[0].clientX
     y.current = e.touches[0].clientY
   }

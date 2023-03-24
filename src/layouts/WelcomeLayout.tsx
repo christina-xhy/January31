@@ -14,6 +14,7 @@ const linkMap: Record<string, string> = {
 }
 
 export const WelcomeLayout: React.FC = () => {
+  //节流
   const animating = useRef(false)
   const map = useRef<Record<string, ReactNode>>({})// hashmap类型
   const location = useLocation()
@@ -24,12 +25,12 @@ export const WelcomeLayout: React.FC = () => {
     from: { transform: location.pathname === '/welcome/1' ? 'translateX(0%)' : 'translateX(100%)' },
     enter: { transform: 'translateX(0%)' },
     leave: { transform: 'translateX(-100%)' },
-    config: { duration: 300 },
+    // config: { duration: 300 },
     onStart: () => {
       setExtraStyle({ position: 'absolute' })
     },
     onRest: () => {
-      animating.current = false
+      animating.current = false // 没有在动画中，停止设为false
       setExtraStyle({ position: 'relative' })
     }
   })
@@ -41,11 +42,12 @@ export const WelcomeLayout: React.FC = () => {
 
   const nav = useNavigate()
   const main = useRef<HTMLElement>(null)// html元素类型
-  const { direction } = useSwipe(main)
+  const { direction } = useSwipe(main, { onTouchStart: e => e.preventDefault() })
+
 
   useEffect(() => {
     if (direction === 'left') {
-      if (animating.current === true) { return }
+      if (animating.current === true) { return }//已经是true 什么都不做
       animating.current = true
       nav(linkMap[location.pathname])
     }
