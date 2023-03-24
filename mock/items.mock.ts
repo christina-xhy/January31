@@ -17,7 +17,7 @@ const create = (attr?: Partial<Item>): Item => {
     happen_at: faker.date.past().toISOString(),
     created_at: faker.date.past().toISOString(),
     updated_at: faker.date.past().toISOString(),
-    kind: 'expense',
+    kind: 'expenses',
     ...attr
   }
 }
