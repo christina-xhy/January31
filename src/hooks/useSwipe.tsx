@@ -7,7 +7,7 @@ interface Config {
 }
 export const useSwipe = (elementRef: RefObject<HTMLElement>, config?: Config) => {
   const [direction, setDirection] = useState<'' | 'left' | 'right' | 'up' | 'down'>('')
-  const x = useRef(-1) 
+  const x = useRef(-1)
   const y = useRef(-1)
   const onTouchStart = (e: TouchEvent) => {
     config?.onTouchStart?.(e)

@@ -36,7 +36,7 @@
 // }
 import type { ReactNode } from 'react'
 import React from 'react'
-import cs from 'classnames'
+import c from 'classnames'
 import s from './Tabs.module.scss'
 type Props<T> = {
   tabItems: {
@@ -53,12 +53,12 @@ type Props<T> = {
 export const Tabs = <T extends string>(props: Props<T>) => {
   const { tabItems, value, onChange, className, classPrefix } = props
   return (
-    <div className={cs(className, classPrefix)} flex flex-col>
+    <div className={c(className, classPrefix)} flex flex-col>
       <ol flex text-white children-px-24px children-py-12px bg="[rgb(255,230,228)]"
         grow-0 shrink-0 className={classPrefix ? `${classPrefix}-menu` : ''}>
         {tabItems.map(item =>
           <li key={item.key} className={
-            cs(
+            c(
               item.key === value ? s.selected : '',
               classPrefix ? `${classPrefix}-menu-item` : ''
             )

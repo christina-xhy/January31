@@ -42,7 +42,7 @@ export const WelcomeLayout: React.FC = () => {
 
   const nav = useNavigate()
   const main = useRef<HTMLElement>(null)// html元素类型
-  const { direction } = useSwipe(main, { onTouchStart: e => e.preventDefault() })
+  const { direction } = useSwipe(main)
 
 
   useEffect(() => {

@@ -3,6 +3,7 @@ declare module 'react' {
   interface HTMLAttributes<T> extends AriaAttributes, DOMAttributes<T> {
     flex?: boolean
     relative?: boolean
+    absolute?: boolean
     text?: string
     grid?: boolean
     before?: string
@@ -10,15 +11,16 @@ declare module 'react' {
     shadow?: boolean
     w?: string
     h?: string
-    bg?:string
-    fixed?:boolean
-    z?:string
-    block?:boolean
+    top?: string
+    bg?: string
+    fixed?: boolean
+    z?: string
+    block?: boolean
     rounded?: string
     b?: string
   }
   interface SVGProps<T> extends SVGAttributes<T>, ClassAttributes<T> {
-    w?:string
-    h?:string
+    w?: string
+    h?: string
   }
 }

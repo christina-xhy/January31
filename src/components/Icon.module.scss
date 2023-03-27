@@ -8,11 +8,19 @@
 // 1. 创建app.scss
 // 2. 把global.scss 所有内容转移到app.scss
 // 3. 不想覆盖的放在最上面的scss 文件中 
-// .icon{
-//     fill: currentColor;
-//     width: 1.2em;
-//     height: 1.2em;
-//   }
+//  unoConfig.js 中设置 
+//preflights: [
+//       {
+//             layer: 'componets',
+//             getCSS : () => `
+//             .icon{
+//                   fill: currentColor;
+//                   width: 1.2em;
+//                   height: 1.2em;
+//             },
+//             `
+//       },
+//     ],
 // 4. 在main.tsx import 的引入顺序及其主要，谁层级最优先，就先引入:如下
 // import './global.scss'
 // import 'virtual:uno.css'
