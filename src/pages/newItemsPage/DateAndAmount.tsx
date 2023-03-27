@@ -1,5 +1,5 @@
 // import { DatePicker } from 'antd-mobile'
-import dayjs from 'dayjs'
+// import dayjs from 'dayjs'
 import { useState } from 'react'
 import { Icon } from '../../components/Icon'
 import { usePopup } from '../../hooks/usePopup'
@@ -10,9 +10,9 @@ interface Props {
 }
 export const DateAndAmount: React.FC<Props> = (props) => {
   const { className } = props
-  // const [createdAt, setCreatedAt] = useState(new Date())
+  // const [createdAt, setCreatedAt] = useState<any>(new Date())
   const [date, setDate] = useState<any>(new Date())
-  const { toggle, popup, hide } = usePopup(true, <DatePickers
+  const { toggle, popup, hide } = usePopup(false, <DatePickers
     onConfirm={d => { setDate(d); hide() }}
     onCancel={() => hide()} />)
   // const [visible, setVisible] = useState<boolean>(false)
@@ -24,14 +24,14 @@ export const DateAndAmount: React.FC<Props> = (props) => {
       {popup}
       <div className={className}>
         <div flex p-t-15px p-b-16px px-16px border-t-1px border-t='#ddd' >
-          <span flex gap-x-8px items-center >
+          <span flex gap-x-8px items-center onClick={toggle} >
             <Icon className='shrink-0 grow-0 w-24px h-24px' name='date' />
-            <span grow-0 shrink-0 text-12px onClick={toggle}>
+            <span grow-0 shrink-0 text-12px >
               {/* <DatePicker visible={visible}
-              onClose={() => { setVisible(false) }}
-              onConfirm={(value) => { onChange(value) }}
-            /> */}
-              {/* <div onClick={() => { setVisible(true) }}>
+                onClose={() => { setVisible(false) }}
+                onConfirm={(value) => { onChange(value) }}
+              />
+              <div onClick={() => { setVisible(true) }}>
                 <div>{dayjs(createdAt).format('YYYY-MM-DD')}</div>
               </div> */}
               {time(date).format()}

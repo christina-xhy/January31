@@ -18,9 +18,9 @@ export const time = (p?: number | string | Date) => {
 }
 
 export class Time {
-      date: Date
+      #date: Date
       constructor(p?: number | string | Date) {
-            this.date = p ? new Date(p) : new Date()
+            this.#date = p ? new Date(p) : new Date()
       }
       get lastDayOfMonth() {
             return new Time(new Date(this.year, this.month - 1 + 1, 0))
@@ -39,8 +39,11 @@ export class Time {
                   .replace(/ss/g, this.seconds.toString().padStart(2, '0'))
                   .replace(/fff/g, this.hours.toString().padStart(3, '0'))
       }
+      get date() {
+            return new Date(this.#date)
+      }
       get timesStamp() {
-            return this.date.getTime()
+            return this.#date.getTime()
       }
       add(n: number, unit: Unit) {
             const table = {
@@ -63,13 +66,13 @@ export class Time {
       }
 
       get parts(): Parts {
-            const year = this.date.getFullYear()
-            const month = this.date.getMonth() + 1
-            const day = this.date.getDate()
-            const hours = this.date.getHours()
-            const minutes = this.date.getMinutes()
-            const seconds = this.date.getSeconds()
-            const ms = this.date.getMilliseconds()
+            const year = this.#date.getFullYear()
+            const month = this.#date.getMonth() + 1
+            const day = this.#date.getDate()
+            const hours = this.#date.getHours()
+            const minutes = this.#date.getMinutes()
+            const seconds = this.#date.getSeconds()
+            const ms = this.#date.getMilliseconds()
             return {
                   year, month, day, hours, minutes, seconds, ms
             }
@@ -88,7 +91,7 @@ export class Time {
                   const k = key as keyof typeof p
                   const methodName = table[k]
                   value = k === 'month' ? value - 1 : value
-                  this.date[methodName](value)
+                  this.#date[methodName](value)
             })
 
             // for (const key in p) {
@@ -96,25 +99,25 @@ export class Time {
             //       if (value === undefined) { return }
             //       switch (key) {
             //             case 'year':
-            //                   this.date.setFullYear(value)
+            //                   this.#date.setFullYear(value)
             //                   break
             //             case 'month':
-            //                   this.date.setMonth(value - 1)
+            //                   this.#date.setMonth(value - 1)
             //                   break
             //             case 'day':
-            //                   this.date.setDate(value)
+            //                   this.#date.setDate(value)
             //                   break
             //             case 'hours':
-            //                   this.date.setHours(value)
+            //                   this.#date.setHours(value)
             //                   break
             //             case 'minutes':
-            //                   this.date.setMinutes(value)
+            //                   this.#date.setMinutes(value)
             //                   break
             //             case 'seconds':
-            //                   this.date.setSeconds(value)
+            //                   this.#date.setSeconds(value)
             //                   break
             //             case 'ms':
-            //                   this.date.setMilliseconds(value)
+            //                   this.#date.setMilliseconds(value)
             //                   break
             //       }
       }
