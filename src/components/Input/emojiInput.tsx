@@ -1,6 +1,7 @@
 import { useState } from "react"
 import { emojis } from "../../lib/emojis"
 import s from './emojiInput.module.scss'
+import sc from '../../pages/TagsNewPage.module.scss'
 type Props = {
     value?: string
     onChange?: (value: string) => void
@@ -17,7 +18,7 @@ export const EmojiInput: React.FC<Props> = (props) => {
                         {
                             emojis.map((emoji) => {
                                 return <span whitespace-nowrap key={emoji.name}
-                                    className={emoji.name === emojiKind ? s.selectedTag : ''}
+                                    className={emoji.name === emojiKind ? sc.selectedTag : ''}
                                     onClick={() => { setEmojiKind(emoji.name) }}>{emoji.name}</span>
                             })
                         }
@@ -29,7 +30,7 @@ export const EmojiInput: React.FC<Props> = (props) => {
                                     grid-cols='[repeat(auto-fit,36px)]' grid-rows='[repeat(auto-fit,36px)]'
                                     justify-center>
                                     {emoji.chars.map(char =>
-                                        <span rounded-4px b-1 b-transparent text-center className={char === value ? s.selected : ''}
+                                        <span key={char} rounded-4px b-1 b-transparent text-center className={char === value ? s.selected : ''}
                                             onClick={() => value !== char && onChange?.(char)}> {char} </span>)}
                                 </div>)
                         }

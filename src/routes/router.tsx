@@ -11,6 +11,7 @@ import { ItemsPage } from '../pages/ItemsPage'
 import { SignInPage } from '../pages/SignInPage'
 import { NewItemsPage } from '../pages/NewItemsPage'
 import { TagsNewPage } from '../pages/TagsNewPage'
+import { TagsEditPage } from '../pages/TagsEditPage'
 
 export const router = createBrowserRouter([
   {
@@ -39,5 +40,7 @@ export const router = createBrowserRouter([
   { path: '/chart', element: <div>图表</div> },
   { path: '/export', element: <div>敬请期待</div> },
   { path: '/tags', element: <div>标签</div> },
+  { path: '/tags/:id', element: <TagsEditPage /> },
   { path: '/notice', element: <div>敬请期待</div> },
+
 ])
