@@ -36,9 +36,9 @@ export const SignInPage: React.FC = () => {
       </div>
       <form j-form onSubmit={onSubmit}>
         <Input label='邮箱地址' placeholder='请输入邮箱，然后点击发送验证码' value={data.email}
-          onChange={value => setData({ email: value })} error={error.email?.[0]} />
+          onChange={email => setData({ email })} error={error.email?.[0]} />
         <Input type='sms_code' label='验证码' placeholder='6位数字' value={data.code}
-          onChange={value => setData({ code: value })}
+          onChange={code => setData({ code })}
           error={error.code?.[0]} />
         <div px-16px mt-70px>
           <button j-btn type='submit'>登录</button>
