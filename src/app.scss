@@ -4,6 +4,7 @@
   --z-menu: 256;
   --z-dialog: 512;
   --z-popup: 1024;
+  --color-blue: #5C33BE
 }
 
 * {
@@ -52,4 +53,8 @@ button {
 
 :focus {
   outline: none;
+}
+
+::-webkit-scrollbar {
+  display: none;
 }

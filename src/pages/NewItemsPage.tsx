@@ -20,7 +20,7 @@ export const NewItemsPage: React.FC = () => {
    </Gradient>
      <Tabs className='children-flex-1 flex-1 text-center grow-1 shrink-1 overflow-hidden' tabItems={tabItems} classPrefix='itemsNewPage'
      value={tabItem} onChange={(item) => { setTabItem(item) } }/>
-      <DateAndAmount className='grow-0 shrink-0' />
+     <DateAndAmount className='grow-0 shrink-0' />
   </div>
   )
 }
