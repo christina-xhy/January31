@@ -9,9 +9,10 @@ import { WelcomeLayout } from '../layouts/WelcomeLayout'
 import { Home } from '../pages/Home'
 import { ItemsPage } from '../pages/ItemsPage'
 import { SignInPage } from '../pages/SignInPage'
-import { NewItemsPage } from '../pages/NewItemsPage'
+import { NewItemsPage } from '../pages/newItemsPage/NewItemsPage'
 import { TagsNewPage } from '../pages/TagsNewPage'
 import { TagsEditPage } from '../pages/TagsEditPage'
+import { StatisticPage } from '../pages/StatisticPage'
 
 export const router = createBrowserRouter([
   {
@@ -41,6 +42,7 @@ export const router = createBrowserRouter([
   { path: '/export', element: <div>敬请期待</div> },
   { path: '/tags', element: <div>标签</div> },
   { path: '/tags/:id', element: <TagsEditPage /> },
+  { path: '/statistics', element: <StatisticPage /> },
   { path: '/notice', element: <div>敬请期待</div> },
 
 ])

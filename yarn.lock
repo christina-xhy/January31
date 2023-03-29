@@ -1587,6 +1587,14 @@
   "resolved" "https://registry.npmmirror.com/duplexer/-/duplexer-0.1.2.tgz"
   "version" "0.1.2"
 
+"echarts@5.4.1":
+  "integrity" "sha512-9ltS3M2JB0w2EhcYjCdmtrJ+6haZcW6acBolMGIuf01Hql1yrIV01L1aRj7jsaaIULJslEP9Z3vKlEmnJaWJVQ=="
+  "resolved" "https://registry.npmmirror.com/echarts/-/echarts-5.4.1.tgz"
+  "version" "5.4.1"
+  dependencies:
+    "tslib" "2.3.0"
+    "zrender" "5.4.1"
+
 "ee-first@1.1.1":
   "integrity" "sha512-WMwm9LhRUo+WUaRN+vRuETqG89IgZphVSNkdFgeb6sS/E4OrDIN7t48CAewSHXc6C8lefD8KKfr5vY61brQlow=="
   "resolved" "https://registry.npmmirror.com/ee-first/-/ee-first-1.1.1.tgz"
@@ -3575,6 +3583,11 @@
   "resolved" "https://registry.npmmirror.com/tslib/-/tslib-2.5.0.tgz"
   "version" "2.5.0"
 
+"tslib@2.3.0":
+  "integrity" "sha512-N82ooyxVNm6h1riLCoyS9e3fuJ3AMG2zIZs2Gd1ATcSFjSA23Q0fzjjZeh0jbJvWVDZ0cJT8yaNNaaXHzueNjg=="
+  "resolved" "https://registry.npmmirror.com/tslib/-/tslib-2.3.0.tgz"
+  "version" "2.3.0"
+
 "tsutils@^3.21.0":
   "integrity" "sha512-mHKK3iUXL+3UF6xL5k0PEhKRUBKPBCv/+RkEOpjRWxxx27KKRBmmA60A9pgOUvMi8GKhRMPEmjBRPzs2W7O1OA=="
   "resolved" "https://registry.npmmirror.com/tsutils/-/tsutils-3.21.0.tgz"
@@ -3814,6 +3827,13 @@
   "integrity" "sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q=="
   "resolved" "https://registry.npmmirror.com/yocto-queue/-/yocto-queue-0.1.0.tgz"
   "version" "0.1.0"
+
+"zrender@5.4.1":
+  "integrity" "sha512-M4Z05BHWtajY2241EmMPHglDQAJ1UyHQcYsxDNzD9XLSkPDqMq4bB28v9Pb4mvHnVQ0GxyTklZ/69xCFP6RXBA=="
+  "resolved" "https://registry.npmmirror.com/zrender/-/zrender-5.4.1.tgz"
+  "version" "5.4.1"
+  dependencies:
+    "tslib" "2.3.0"
 
 "zustand@^4.3.2":
   "integrity" "sha512-rd4haDmlwMTVWVqwvgy00ny8rtti/klRoZjFbL/MAcDnmD5qSw/RZc+Vddstdv90M5Lv6RPgWvm1Hivyn0QgJw=="
