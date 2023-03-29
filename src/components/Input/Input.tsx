@@ -10,10 +10,11 @@ type Props = {
     onChange?: (value: string) => void
     error?: string
     disableError?: boolean
+
 } & (
         | { type: 'text' }
         | { type: 'emoji' }
-        | { type: 'sms_code'; onClick: () => void }
+        | { type: 'sms_code'; request?: () => Promise<unknown> }
         | { type: 'select', options: { value: string; text: string }[] }
     )
 
@@ -31,7 +32,7 @@ export const Input: React.FC<Props> = (props) => {
                     return <EmojiInput value={value} onChange={value => onChange?.(value)} />
                 case 'sms_code':
                     return <SmsCodeInput value={value} type='text' onChange={onChange} placeholder={placeholder}
-                        onClick={props.onClick} />
+                        request={props.request} />
                 case 'select':
                     return <select rounded-6px className={'h-36px'} value={value} onChange={e => onChange?.(e.target.value)}>
                         {props.options.map((option) => {

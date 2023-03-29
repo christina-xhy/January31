@@ -1,17 +1,24 @@
+import { ThemeConsumer } from "styled-components"
+
 type Props = {
     value?: string
     placeholder?: string
     onChange?: (value: string) => void
     onClick?: () => void
+    request?: () => Promise<unknown>
 } & (
         | { type: 'text' }
         | { type: 'emoji' }
-        | { type: 'sms_code'; onClick: () => void }
+        | { type: 'sms_code'; request: () => Promise<unknown> }
         | { type: 'select', options: { value: string; text: string }[] }
     )
 
 export const SmsCodeInput: React.FC<Props> = (props) => {
-    const { value, placeholder, onChange, onClick, type } = props
+    const { value, placeholder, onChange, request, type } = props
+    const onClick = async () => {
+        if (!request) { return }
+        await request?.()
+    }
     return (
         <div>
             <div flex gap-x-6px>
