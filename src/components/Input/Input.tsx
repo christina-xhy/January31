@@ -1,22 +1,29 @@
 
 import { ReactNode, useState } from 'react'
-import { render } from 'react-dom'
 import { EmojiInput } from './emojiInput'
 
 type Props = {
-    label: string | ReactNode
+    label?: string | ReactNode
     placeholder?: string
-    type?: 'text' | 'emoji' | 'sms_code'
+    | 'emoji' | 'sms_code' | 'select'
     value?: string
     onChange?: (value: string) => void
     error?: string
-}
+    disableError?: boolean
+} & (
+        | { type: 'text' }
+        | { type: 'emoji' }
+        | { type: 'sms_code' }
+        | { type: 'select', options: { value: string; text: string }[] }
+    )
+
 
 export const Input: React.FC<Props> = (props) => {
-    const { label, placeholder, value, onChange, type = 'text', error } = props
+    const { label, placeholder, value, onChange, type, error, disableError } = props
     const renderInput = () => {
         {
-            switch (type) {
+            switch (props.type) {
+                case undefined:
                 case 'text':
                     return <input j-input-text rounded-8px type={type} placeholder={placeholder}
                         value={value} onChange={e => onChange?.(e.target.value)} />
@@ -28,6 +35,12 @@ export const Input: React.FC<Props> = (props) => {
                             value={value} onChange={e => onChange?.(e.target.value)} />
                         <button max-w='[calc(60%-8px)]' shrink-0 j-btn ml-16px>发送验证码</button>
                     </div>
+                case 'select':
+                    return <select rounded-6px className={'h-36px'} value={value} onChange={e => onChange?.(e.target.value)}>
+                        {props.options.map((option) => {
+                            return <option key={option.value} value={option.value}>{option.text}</option>
+                        })}
+                    </select>
                 default:
                     return null
             }
@@ -36,10 +49,10 @@ export const Input: React.FC<Props> = (props) => {
     return (
         <>
             <div flex flex-col gap-y-8px>
-                <span j-form-label >{label}</span>
+                {label ? <span j-form-label >{label}</span> : null}
                 {renderInput()}
             </div>
-            <span text-red text-12px>{error || ' '}</span>
+            {disableError ? null : <span text-red text-12px>{error || ' '}</span>}
         </>
     )
 }

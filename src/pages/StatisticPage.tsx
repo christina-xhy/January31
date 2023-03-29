@@ -1,7 +1,7 @@
 import { useState } from "react"
-import { AddItemFloatButton } from "../components/AddItmeFloatButton"
 import { Gradient } from "../components/Gradient"
 import { Icon } from "../components/Icon"
+import { Input } from "../components/Input/Input"
 import { LineChart } from "../components/LineChart"
 import { PieChart } from "../components/PieChart"
 import { RankChart } from "../components/RankChart"
@@ -11,6 +11,7 @@ import { TopNav } from "../components/TopNav"
 
 export const StatisticPage: React.FC = () => {
     const [timeRange, setTimeRange] = useState<TimeRange>('thisMonth')
+    const [x, setX] = useState('')
     const items = [
         { date: '20223-01-01', value: 100000 },
         { date: '20223-01-03', value: 300000 },
@@ -43,7 +44,15 @@ export const StatisticPage: React.FC = () => {
                 } />
             </Gradient>
             <TimeRangePicker selected={timeRange} onSelect={setTimeRange} />
-            <AddItemFloatButton />
+            <div flex px-16px grow-0 shrink-0 items-center gap-x-16px p-16px>
+                <span>类型</span>
+                <div grow-1 shrink-1>
+                    <Input type='select' options={[
+                        { text: '支出', value: 'expenses' },
+                        { text: '收入', value: 'income' }
+                    ]} value={x} onChange={value => setX(value)} />
+                </div>
+            </div>
             <LineChart className={'h-200px  m-b-24px'} items={items} />
             <PieChart className={'h-360px '} items={items2} />
             <RankChart className={'h-300px'} items={item3} />

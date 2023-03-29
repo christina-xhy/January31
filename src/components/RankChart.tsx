@@ -15,7 +15,7 @@ export const RankChart: React.FC<Props> = (props) => {
     const renderItems = () => {
         return (
             <div >
-                {items?.map((item, index) => <div b-1 b-red grid grid-cols='[48px_1fr_1fr]'
+                {items?.map((item, index) => <div key={item.name} b-1 b-red grid grid-cols='[48px_1fr_1fr]'
                     text-14px grid-rows='[repeat,1fr)]' items-center my-16px px-16px gap-x-8px gap-y-6px>
 
                     <div row-start-1 col-start-1 row-end-3 col-end-2 bg='#eee' w-48px h-48px rounded-24px
@@ -30,7 +30,6 @@ export const RankChart: React.FC<Props> = (props) => {
                         <div absolute rounded-4px h='100%'
                             style={{ background: colors[index], width: `${item.value / max * 100}%` }} />
                     </div>
-
                 </div>)
                 }
             </div >
