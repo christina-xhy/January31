@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import useSWRInfinite from 'swr/infinite'
-import { ajax } from '../../lib/ajax'
+import { useAjax } from '../../lib/ajax'
 
 const Div = styled.div`
   padding:16px;
@@ -20,8 +20,9 @@ interface Props {
 
 }
 export const ItemsList: React.FC<Props> = () => {
+  const { get } = useAjax({})
   const { data, error, size, setSize } = useSWRInfinite(
-    getKey, async path => (await ajax.get<Resources<Item>>(path)).data
+    getKey, async path => (await get<Resources<Item>>(path)).data
   )
   const onLoadMore = () => {
     setSize(size + 1)
@@ -44,40 +45,40 @@ export const ItemsList: React.FC<Props> = () => {
     const hasMore = (page - 1) * per_page + last.resources.length < count
 
     return (
-    <>
-      <ol>
-        {
-          data.map(({ resources }) => {
-            return resources.map((item) => {
-              return (
-                <li key={item.id} grid grid-cols='[auto_1fr_auto]' grid-rows-2 px-16px py-8px gap-x-12px >
+      <>
+        <ol>
+          {
+            data.map(({ resources }) => {
+              return resources.map((item) => {
+                return (
+                  <li key={item.id} grid grid-cols='[auto_1fr_auto]' grid-rows-2 px-16px py-8px gap-x-12px >
                     <div row-start-1 col-start-1 row-end-3 col-end-2 text-24px
-                    w-48px h-48px bg='#EFEFEF' rounded-50px flex justify-center items-center border-b-1 border-b='#EEE'>
-                    😘
+                      w-48px h-48px bg='#EFEFEF' rounded-50px flex justify-center items-center border-b-1 border-b='#EEE'>
+                      😘
                     </div>
                     <div row-start-1 col-start-2 row-end-2 col-end-3 text='#000000'>
-                    {item.note}
+                      {item.note}
                     </div>
                     <div row-start-2 col-start-2 row-end-3 col-end-4 text='#999999'>
-                    {item.created_at}
+                      {item.created_at}
                     </div>
                     <div row-start-1 col-start-3 row-end-2 col-end-4 text='#53A867'>
-                    ¥{item.amount / 100}
+                      ¥{item.amount / 100}
                     </div>
-                </li>
-              )
+                  </li>
+                )
+              })
             })
-          })
-        }
-      </ol>
-      {error && <Div>数据加载失败，请刷新页面</Div>}
+          }
+        </ol>
+        {error && <Div>数据加载失败，请刷新页面</Div>}
 
-      {!hasMore
-        ? <Div>没有更多数据了</Div>
-        : isLoading
-          ? <Div>数据正在加载中...</Div>
-          : <Div> <button j-btn onClick = { onLoadMore }>加载更多</button></Div>}
-    </>
+        {!hasMore
+          ? <Div>没有更多数据了</Div>
+          : isLoading
+            ? <Div>数据正在加载中...</Div>
+            : <Div> <button j-btn onClick={onLoadMore}>加载更多</button></Div>}
+      </>
     )
   }
 }

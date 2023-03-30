@@ -1,4 +1,3 @@
-import { Loading } from 'antd-mobile';
 import axios, { AxiosRequestConfig } from 'axios'
 import { useContext } from 'react';
 import { LoadingContext } from '../App';

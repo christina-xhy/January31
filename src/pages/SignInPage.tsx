@@ -1,7 +1,6 @@
 import axios, { AxiosError } from 'axios'
-import { FormEventHandler, useContext } from 'react'
+import { FormEventHandler } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { LoadingContext } from '../App'
 import { Gradient } from '../components/Gradient'
 import { Icon } from '../components/Icon'
 import { Input } from '../components/Input/Input'
