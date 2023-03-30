@@ -1,10 +1,12 @@
 import axios, { AxiosError } from 'axios'
 import type { FormEventHandler } from 'react'
 import { useNavigate } from 'react-router-dom'
+import styled from 'styled-components'
 import { Gradient } from '../components/Gradient'
 import { Icon } from '../components/Icon'
 import { Input } from '../components/Input/Input'
 import { TopNav } from '../components/TopNav'
+import { usePopup } from '../hooks/usePopup'
 import { ajax } from '../lib/ajax'
 import { FormError, hasError, validate } from '../lib/validate'
 import { useSignInStore } from '../stores/useSignInStore'
@@ -34,6 +36,15 @@ export const SignInPage: React.FC = () => {
       nav('/home')
     }
   }
+  const Spin = styled(Icon)`
+    animation: spin 1s linear infinite;
+    @keyframes spin{
+      from{ transform: rotate(0deg)}
+      to { transform: rotate(360deg) }
+    }
+  `
+  const { show, hide, popup } = usePopup(false, <div p-16px>
+    <Spin className='w-32px h-32px' name='loading' /></div>, 'center')
   const sendSmsCode = async () => {
     const newError = validate({ email: data.email }, [
       { key: 'email', type: 'pattern', regex: /^.+@.+$/, message: '邮箱地址格式不正确' },
@@ -41,11 +52,12 @@ export const SignInPage: React.FC = () => {
     setError(newError)
     if (hasError(newError)) {
       setError(newError)
-      console.log('wrong')
+      throw new Error('表单出错')
     } else {
+      show()
       const response = await axios.post('http://121.196.236.94:8080/api/v1/validation_codes',
         { email: data.email }
-      )
+      ).finally(() => hide())
       console.log(response)
       console.log('right')
       return response
@@ -53,6 +65,7 @@ export const SignInPage: React.FC = () => {
   }
   return (
     <div>
+      {popup}
       <Gradient>
         <TopNav title='登录' icon={<Icon name='back'></Icon>} />
       </Gradient>

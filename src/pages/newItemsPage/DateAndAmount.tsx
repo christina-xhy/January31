@@ -12,9 +12,9 @@ export const DateAndAmount: React.FC<Props> = (props) => {
   const { className } = props
   const [output, _setOutput] = useState('0')
   const [date, setDate] = useState<any>(new Date())
-  const { toggle, popup, hide } = usePopup(false, <DatePickers
+  const { toggle, popup, hide } = usePopup(false, < DatePickers
     onConfirm={d => { setDate(d); hide() }}
-    onCancel={() => hide()} />)
+    onCancel={() => hide()} />, 'bottom')
   // const [createdAt, setCreatedAt] = useState<any>(new Date())
   // const [visible, setVisible] = useState<boolean>(false)
   // const onChange = (value: object) => {
