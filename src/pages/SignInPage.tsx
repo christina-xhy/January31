@@ -1,7 +1,8 @@
 import axios, { AxiosError } from 'axios'
-import type { FormEventHandler } from 'react'
+import { FormEventHandler, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
+import { LoadingContext } from '../App'
 import { Gradient } from '../components/Gradient'
 import { Icon } from '../components/Icon'
 import { Input } from '../components/Input/Input'
@@ -36,15 +37,7 @@ export const SignInPage: React.FC = () => {
       nav('/home')
     }
   }
-  const Spin = styled(Icon)`
-    animation: spin 1s linear infinite;
-    @keyframes spin{
-      from{ transform: rotate(0deg)}
-      to { transform: rotate(360deg) }
-    }
-  `
-  const { show, hide, popup } = usePopup(false, <div p-16px>
-    <Spin className='w-32px h-32px' name='loading' /></div>, 'center')
+  const { show, hide } = useContext(LoadingContext)
   const sendSmsCode = async () => {
     const newError = validate({ email: data.email }, [
       { key: 'email', type: 'pattern', regex: /^.+@.+$/, message: '邮箱地址格式不正确' },
@@ -65,7 +58,6 @@ export const SignInPage: React.FC = () => {
   }
   return (
     <div>
-      {popup}
       <Gradient>
         <TopNav title='登录' icon={<Icon name='back'></Icon>} />
       </Gradient>
