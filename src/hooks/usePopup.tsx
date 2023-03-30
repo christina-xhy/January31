@@ -11,7 +11,8 @@ type Props = {
 }
 export const usePopup = (initVisible = false, children: ReactNode, position: 'bottom' | 'center') => {
   const [visible, setVisible] = useState(initVisible)
-  const popup = ReactDOM.createPortal(<Popup position={position} visible={visible} onClickMask={() => setVisible(false)} >
+  const popup = ReactDOM.createPortal(<Popup position={position} 
+  visible={visible} onClickMask={() => setVisible(false)} >
     {children}
   </Popup>, rootDiv)
   return {
