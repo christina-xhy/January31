@@ -1,20 +1,20 @@
 import axios, { AxiosError } from 'axios'
 import { FormEventHandler, useContext } from 'react'
 import { useNavigate } from 'react-router-dom'
-import styled from 'styled-components'
 import { LoadingContext } from '../App'
 import { Gradient } from '../components/Gradient'
 import { Icon } from '../components/Icon'
 import { Input } from '../components/Input/Input'
 import { TopNav } from '../components/TopNav'
-import { usePopup } from '../hooks/usePopup'
-import { ajax } from '../lib/ajax'
+import { useAjax } from '../lib/ajax'
 import { FormError, hasError, validate } from '../lib/validate'
 import { useSignInStore } from '../stores/useSignInStore'
 
 export const SignInPage: React.FC = () => {
   const nav = useNavigate()
   const { data, error, setError, setData } = useSignInStore()
+  const { post: postWithLoading } = useAjax({ showLoading: true })
+  const { post: postWithoutLoading } = useAjax({ showLoading: false })
   const onSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault()
     const onSubmitError = (error: AxiosError<{ errors: FormError<typeof data> }>) => {
@@ -28,16 +28,17 @@ export const SignInPage: React.FC = () => {
       { key: 'code', type: 'required', message: '请输入验证码' },
       { key: 'code', type: 'length', min: 6, max: 6, message: '验证码必须是6个字符' },
     ])
+
     setError(newError)
     if (!hasError(newError)) {
-      const response = await ajax.post<{ jwt: string }>('http://121.196.236.94:8080/api/v1/session', data)
+      const response = await postWithLoading<{ jwt: string }>('http://121.196.236.94:8080/api/v1/session', data)
         .catch(onSubmitError)
       const jwt = response.data.jwt
       localStorage.setItem('jwt', jwt)
       nav('/home')
     }
   }
-  const { show, hide } = useContext(LoadingContext)
+
   const sendSmsCode = async () => {
     const newError = validate({ email: data.email }, [
       { key: 'email', type: 'pattern', regex: /^.+@.+$/, message: '邮箱地址格式不正确' },
@@ -47,10 +48,9 @@ export const SignInPage: React.FC = () => {
       setError(newError)
       throw new Error('表单出错')
     } else {
-      show()
-      const response = await axios.post('http://121.196.236.94:8080/api/v1/validation_codes',
+      const response = await postWithoutLoading('http://121.196.236.94:8080/api/v1/validation_codes',
         { email: data.email }
-      ).finally(() => hide())
+      )
       console.log(response)
       console.log('right')
       return response
