@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { AxiosError } from 'axios'
 import type { FormEventHandler } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { Gradient } from '../components/Gradient'
@@ -6,7 +6,7 @@ import { Icon } from '../components/Icon'
 import { Input } from '../components/Input/Input'
 import { TopNav } from '../components/TopNav'
 import { ajax } from '../lib/ajax'
-import { hasError, validate } from '../lib/validate'
+import { FormError, hasError, validate } from '../lib/validate'
 import { useSignInStore } from '../stores/useSignInStore'
 
 export const SignInPage: React.FC = () => {
@@ -14,6 +14,11 @@ export const SignInPage: React.FC = () => {
   const { data, error, setError, setData } = useSignInStore()
   const onSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault()
+    const onSubmitError = (error: AxiosError<{ errors: FormError<typeof data> }>) => {
+      //后端的error直接可以setError，特殊情况需要格式转换
+      setError(error.response?.data.errors ?? {})
+      throw error
+    }
     const newError = validate(data, [
       { key: 'email', type: 'required', message: '请输入邮箱地址' },
       { key: 'email', type: 'pattern', regex: /^.+@.+$/, message: '邮箱地址格式不正确' },
@@ -22,7 +27,10 @@ export const SignInPage: React.FC = () => {
     ])
     setError(newError)
     if (!hasError(newError)) {
-      await ajax.post('/api/v1/session', data)
+      const response = await ajax.post<{ jwt: string }>('http://121.196.236.94:8080/api/v1/session', data)
+        .catch(onSubmitError)
+      const jwt = response.data.jwt
+      localStorage.setItem('jwt', jwt)
       nav('/home')
     }
   }

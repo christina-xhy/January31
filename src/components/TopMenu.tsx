@@ -7,7 +7,7 @@ interface Props {
   onClickMask?: () => void
   visible?: boolean
 }
-export const TopMeue: React.FC<Props> = (props) => {
+export const TopMenu: React.FC<Props> = (props) => {
   const { onClickMask, visible } = props
   const [maskVisible, setMaskVisible] = useState(visible)
   const maskStyle = useSpring({
@@ -31,14 +31,14 @@ export const TopMeue: React.FC<Props> = (props) => {
   return (
     <>
       <animated.div fixed top-0 left-0 w='100%' h='100%' bg='[rgba(0,0,0,0.75)]'
-        style = {styles}
+        style={styles}
         z='[calc(var(--z-menu)-1)]' onClick={onClickMask} />
 
-      <animated.div fixed top-0 left-0 w='70vw'max-w-20em h-screen flex flex-col z='[var(--z-menu)]'
-        style ={menuStyle}
+      <animated.div fixed top-0 left-0 w='70vw' max-w-20em h-screen flex flex-col z='[var(--z-menu)]'
+        style={menuStyle}
       >
-        <CurrentUser className='grow-1 shrink-0'/>
-        <Menu className='grow-1 shrink-1'/>
+        <CurrentUser className='grow-1 shrink-0' />
+        <Menu className='grow-1 shrink-1' />
       </animated.div>
     </>
   )
