@@ -10,13 +10,14 @@ interface Props {
   title?: string
 }
 export const Home: React.FC<Props> = (props) => {
-  const { get } = useAjax({ showLoading: false })
+  const { get: getWithLoading } = useAjax({ showLoading: true, handleError: false })
+  // const { get } = useAjax({ showLoading: false })
   useTitle(props.title)
   const { data: meData, error: meError } = useSWR('/api/v1/me', async path =>
-    (await get<Resource<User>>(path)).data.resource
+    (await getWithLoading<Resource<User>>(path)).data.resource
   )
   const { data: itemsData } = useSWR(meData ? '/api/v1/items' : null, async path =>
-    (await get<Resources<Item>>(path)).data
+    (await getWithLoading<Resources<Item>>(path)).data
   )
   // dev 访问本地mock服务器，build 访问真实的远程服务器 配置vite.config.ts define(command === serve)
 
