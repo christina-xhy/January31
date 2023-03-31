@@ -41,14 +41,16 @@ const createResponse = ({ count = 100, perPage = 10, page = 1 }, attr?: Partial<
 }
 // 创建多个item 同时创建pager：{}
 
+//使用mock，创建数据
+
 export const itemsMock: MockMethod = {
   url: '/api/v1/items',
   method: 'get',
   statusCode: 200,
   timeout: 100,
   response: ({ query }: ResponseParams): Resources<Item> => {
-    return createResponse({ count: 30, perPage: 10, page: parseInt(query.page) })
+    return createResponse({ count: 100, perPage: 10, page: parseInt(query.page) || 1 })
   }
-  // query是Mock，response中的属性
+  // query是Mock，response中的属性,设置path路径
 }
 

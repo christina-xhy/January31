@@ -1,4 +1,4 @@
-import { createBrowserRouter } from 'react-router-dom'
+import { createBrowserRouter, Navigate } from 'react-router-dom'
 import { NotFoundPage } from '../pages/NotFoundPage'
 import { Root } from '../components/Root'
 import { Welcome1 } from '../pages/Welcome1'
@@ -13,6 +13,8 @@ import { NewItemsPage } from '../pages/newItemsPage/NewItemsPage'
 import { TagsNewPage } from '../pages/TagsNewPage'
 import { TagsEditPage } from '../pages/TagsEditPage'
 import { StatisticPage } from '../pages/StatisticPage'
+import axios, { AxiosError } from 'axios'
+import { ItemsErrorPage } from '../pages/ItemsPageError'
 
 export const router = createBrowserRouter([
   {
@@ -34,7 +36,27 @@ export const router = createBrowserRouter([
       { path: '4', element: <Welcome4 /> },
     ],
   },
-  { path: '/items', element: <ItemsPage title='记账页面' /> },
+  {
+    path: '/items',
+    element: <ItemsPage title='记账页面' />,
+    errorElement: <ItemsErrorPage />,
+    loader: async () => {
+      const onError = (error: AxiosError) => {
+        const errors = error.response?.status
+        if (errors === 401) {
+          throw new Error('unAuthorized')
+        } else {
+          throw error
+        }
+      }
+      const response = await axios.get<Resources<Item>>('/api/v1/items?page=1').catch(onError)
+      if (response.data.resources.length > 0) {
+        return response.data
+      } else {
+        throw new Error('not_found')
+      }
+    }
+  },
   { path: '/items/new', element: <NewItemsPage /> },
   { path: '/tags/new', element: <TagsNewPage /> },
   { path: '/sign_in', element: <SignInPage /> },

@@ -14,10 +14,12 @@ export const SignInPage: React.FC = () => {
   const { data, error, setError, setData } = useSignInStore()
   const { post: postWithLoading } = useAjax({ showLoading: true })
   const { post: postWithoutLoading } = useAjax({ showLoading: false })
+
   const onSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault()
     const onSubmitError = (error: AxiosError<{ errors: FormError<typeof data> }>) => {
       //后端的error直接可以setError，特殊情况需要格式转换
+      //检查校验格式以及
       setError(error.response?.data.errors ?? {})
       throw error
     }
@@ -34,7 +36,7 @@ export const SignInPage: React.FC = () => {
         .catch(onSubmitError)
       const jwt = response.data.jwt
       localStorage.setItem('jwt', jwt)
-      nav('/home')
+      nav('/items')
     }
   }
 
@@ -44,16 +46,18 @@ export const SignInPage: React.FC = () => {
     ])
     setError(newError)
     if (hasError(newError)) {
+      //如果校验格式错误，显示错误
       setError(newError)
+      //依然需要校验axios的请求后是否正确，因为这个函数的结果会传给request，必须拿到结果如果是错误抛出错误
+      //return undefined 表示默认是成功的，会出现bug，直接退出不执行后面的代码
       throw new Error('表单出错')
-    } else {
-      const response = await postWithLoading('http://121.196.236.94:8080/api/v1/validation_codes',
-        { email: data.email }
-      )
-      console.log(response)
-      console.log('right')
-      return response
     }
+    const response = await postWithLoading('http://121.196.236.94:8080/api/v1/validation_codes',
+      { email: data.email }
+    )
+    console.log(response)
+    console.log('right')
+    return response
   }
   return (
     <div>
