@@ -15,6 +15,7 @@ import { TagsEditPage } from '../pages/TagsEditPage'
 import { StatisticPage } from '../pages/StatisticPage'
 import axios, { AxiosError } from 'axios'
 import { ItemsErrorPage } from '../pages/ItemsPageError'
+import { preload } from 'swr'
 
 export const router = createBrowserRouter([
   {
@@ -49,12 +50,15 @@ export const router = createBrowserRouter([
           throw error
         }
       }
-      const response = await axios.get<Resources<Item>>('/api/v1/items?page=1').catch(onError)
-      if (response.data.resources.length > 0) {
-        return response.data
-      } else {
-        throw new Error('not_found')
-      }
+      return preload('/api/v1/items?page=1', async (path) => {
+        debugger
+        const response = await axios.get<Resources<Item>>(path).catch(onError)
+        if (response.data.resources.length > 0) {
+          return response.data
+        } else {
+          throw new Error('not_found')
+        }
+      })
     }
   },
   { path: '/items/new', element: <NewItemsPage /> },
