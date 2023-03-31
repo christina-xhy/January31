@@ -23,10 +23,11 @@ type Options = {
 }
 export const useAjax = (options: Options) => {
   const nav = useNavigate()
-  const table: Record<number, undefined | (() => void)> = {
+  const table: Record<string, undefined | (() => void)> = {
     401: () => { nav('/sign_in') },
     402: () => { window.alert('请付费后观看') },
-    403: () => { window.alert('没有权限') }
+    403: () => { window.alert('没有权限') },
+    unknown: () => { window.alert('未知错误') }
   }
   const showLoading = options?.showLoading || false
   const handleError = options?.handleError ?? true
@@ -34,13 +35,8 @@ export const useAjax = (options: Options) => {
   const onError = (error: AxiosError) => {
     if (error.response) {
       if (handleError) {
-        const { status } = error.response
-        const fn = table[status]
-        if (fn) {
-          fn()
-        } else {
-          window.alert('未知错误')
-        }
+        const { status } = error.response;
+        (table[status] || table.unknown)?.()
       }
     }
     throw error
@@ -48,7 +44,7 @@ export const useAjax = (options: Options) => {
   const ajax = {
     get: <T>(path: string, config?: AxiosRequestConfig<any>) => {
       return axios.get<T>(path, config).catch(onError)
-    }
+    },
     post: <T>(path: string, data: JSONValue) => {
       if (showLoading) { show() }
       return axios.post<T>(path, data).catch(onError).finally(() => {
