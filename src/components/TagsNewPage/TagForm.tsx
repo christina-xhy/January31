@@ -7,7 +7,7 @@ import { useCreateTagStore } from "../../stores/useCreateTagStore"
 type Props = {
     type: 'create' | 'edit'
 }
-
+//标签页面的TagsEditPage/TagsNewPage做类型校验 -- 在发送ajax post请求，并对结果做处理
 export const TagForm: React.FC<Props> = (props) => {
     const { data, error, setData, setError } = useCreateTagStore()
     const { type } = props
@@ -22,6 +22,7 @@ export const TagForm: React.FC<Props> = (props) => {
         }
         setData({ kind })
     }, [searchParams])
+    
     const params = useParams()
     useEffect(() => {
         if (type !== 'edit') { return }

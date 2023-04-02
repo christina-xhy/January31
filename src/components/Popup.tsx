@@ -88,7 +88,7 @@ export const Popup: React.FC<Props> = (props) => {
           style={menuStyles} rounded-t-8px overflow-hidden>
           {children}
         </animated.div>
-        : <animated.div fixed translate-x='-50%' left='[50%]' top='[50%]' translate-y='-50%' bg-white
+        : <animated.div fixed translate-x='-50%' left='[50%]' top='[50%]' translate-y='-50%' className="bg-white:55"
           z="[calc(var(--z-popup))]"
           style={menuStyles} rounded-8px overflow-hidden>
           {children}

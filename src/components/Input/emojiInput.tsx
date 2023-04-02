@@ -31,7 +31,8 @@ export const EmojiInput: React.FC<Props> = (props) => {
                                     justify-center>
                                     {emoji.chars.map(char =>
                                         <span key={char} rounded-4px b-1 b-transparent text-center className={char === value ? s.selected : ''}
-                                            onClick={() => value !== char && onChange?.(char)}> {char} </span>)}
+                                            onClick={() => value !== char && onChange?.(char)}>{char} </span>)}
+
                                 </div>)
                         }
                     </div>

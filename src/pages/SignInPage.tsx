@@ -1,6 +1,6 @@
 import axios, { AxiosError } from 'axios'
 import { FormEventHandler } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { Gradient } from '../components/Gradient'
 import { Icon } from '../components/Icon'
 import { Input } from '../components/Input/Input'
@@ -14,6 +14,7 @@ export const SignInPage: React.FC = () => {
   const { data, error, setError, setData } = useSignInStore()
   const { post: postWithLoading } = useAjax({ showLoading: true })
   const { post: postWithoutLoading } = useAjax({ showLoading: false })
+  const [search] = useSearchParams()
 
   const onSubmit: FormEventHandler<HTMLFormElement> = async (e) => {
     e.preventDefault()
@@ -36,7 +37,8 @@ export const SignInPage: React.FC = () => {
         .catch(onSubmitError)
       const jwt = response.data.jwt
       localStorage.setItem('jwt', jwt)
-      nav('/items')
+      const from = search.get('from') || '/items'
+      nav(from)
     }
   }
 

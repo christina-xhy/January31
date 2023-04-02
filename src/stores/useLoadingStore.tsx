@@ -12,3 +12,4 @@ export const useLoadingStore = create<Loading>((set, get) => (
         }
     }
 ))
+//用于loading是否加载，全局状态管理

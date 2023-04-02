@@ -23,3 +23,25 @@ export default [
 //       res.setHeader('Content-Type', 'text/plain')
 //       res.statusCode = 200
 //       res.end(`hello, ${reqbody}`)
+
+
+//useParams的使用方法 
+// import { useParams } from 'react-router-dom';
+
+// function User() {
+//   const { id } = useParams();
+
+//   const getUser = async (id) => {
+//     const userId = parseInt(id, 10);
+//     const response = await fetch(`/api/users/${userId}`);
+//     const user = await response.json();
+//     return user;
+//   };
+
+//   return (
+//     <div>
+//       <p>User ID: {id}</p>
+//       <button onClick={() => getUser(id)}>Get User</button>
+//     </div>
+//   );
+// }
