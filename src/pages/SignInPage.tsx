@@ -30,7 +30,6 @@ export const SignInPage: React.FC = () => {
       { key: 'code', type: 'required', message: '请输入验证码' },
       { key: 'code', type: 'length', min: 6, max: 6, message: '验证码必须是6个字符' },
     ])
-
     setError(newError)
     if (!hasError(newError)) {
       const response = await postWithoutLoading<{ jwt: string }>('http://121.196.236.94:8080/api/v1/session', data)
@@ -57,8 +56,6 @@ export const SignInPage: React.FC = () => {
     const response = await postWithLoading('http://121.196.236.94:8080/api/v1/validation_codes',
       { email: data.email }
     )
-    console.log(response)
-    console.log('right')
     return response
   }
   return (

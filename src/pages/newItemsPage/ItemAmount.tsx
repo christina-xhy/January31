@@ -1,7 +1,7 @@
+import { FormEventHandler, ReactNode, useState } from 'react'
 import { DatePicker } from 'antd-mobile'
 import dayjs from 'dayjs'
 import { Icon } from '../../components/Icon'
-import { ReactNode, useState } from 'react'
 import { time } from '../../lib/time'
 
 interface Props {
@@ -11,9 +11,10 @@ interface Props {
   onChange?: (amount: number) => void
   dateValue?: Date | string
   dateChange: (date: string) => void
+  onSubmit?: () => void
 }
 export const ItemAmount: React.FC<Props> = (props) => {
-  const { className, itemDate, value, onChange, dateValue, dateChange } = props
+  const { className, itemDate, value, onChange, dateValue, dateChange, onSubmit } = props
   const [output, _setOutput] = useState(() => value?.toString() ?? '0')
   //拦截器
   const setOutput = (char: string) => {
@@ -21,6 +22,7 @@ export const ItemAmount: React.FC<Props> = (props) => {
     if (dotIndex >= 0 && char.length - dotIndex > 3) { return }
     if (char.length > 16) { return }
     _setOutput(char)
+    //字符串格式才能保住小数点
     onChange?.(parseFloat(char))
   }
   const append = (char: string) => {
@@ -41,18 +43,18 @@ export const ItemAmount: React.FC<Props> = (props) => {
 
   }
   const clear = () => { setOutput('0') }
-  const [createdAt, setCreatedAt] = useState<any>(new Date())
-  const [visible, setVisible] = useState<boolean>(false)
-  const chooseChange = (date: string) => {
-    dateChange(time(date).isoString)
-  }
+  // const [createdAt, setCreatedAt] = useState<any>(new Date())
+  // const [visible, setVisible] = useState<boolean>(false)
+  // const chooseChange = (date: string) => {
+  //   dateChange(time(date).isoString)
+  // }
 
   return (
     <>
       <div className={className}>
         <div flex p-t-15px p-b-16px px-16px border-t-1px border-t='#ddd' >
           {itemDate}
-          <span flex gap-x-8px items-center >
+          {/* <span flex gap-x-8px items-center >
             <Icon className='shrink-0 grow-0 w-24px h-24px' name='date' />
             <span grow-0 shrink-0 text-12px >
               <DatePicker visible={visible}
@@ -63,25 +65,25 @@ export const ItemAmount: React.FC<Props> = (props) => {
                 <div>{dayjs(dateValue).format('YYYY-MM-DD')}</div>
               </div>
             </span>
-          </span>
+          </span> */}
           <code grow-1 items-center shrink-1 text-right text-20px color='pink' >{output}</code>
         </div>
         <div py-1px grid grid-cols='[repeat(4,1fr)]' grid-rows='[repeat(4,48px)]'
           children-b-none children-bg-white gap-x-1px gap-y-1px bg='#ddd'>
-          <button row-start-1 col-start-2 row-end-2 col-end-3 onClick={() => append('2')}>2</button>
-          <button row-start-1 col-start-3 row-end-2 col-end-4 onClick={() => append('3')}>3</button>
-          <button row-start-2 col-start-1 row-end-3 col-end-2 onClick={() => append('4')}>4</button>
-          <button row-start-1 col-start-1 row-end-2 col-end-2 onClick={() => append('1')}>1</button>
-          <button row-start-2 col-start-2 row-end-3 col-end-3 onClick={() => append('5')}>5</button>
-          <button row-start-2 col-start-3 row-end-3 col-end-4 onClick={() => append('6')}>6</button>
-          <button row-start-3 col-start-1 row-end-4 col-end-2 onClick={() => append('7')}>7</button>
-          <button row-start-3 col-start-2 row-end-4 col-end-3 onClick={() => append('8')}>8</button>
-          <button row-start-3 col-start-3 row-end-4 col-end-4 onClick={() => append('9')}>9</button>
-          <button row-start-4 col-start-1 row-end-5 col-end-3 onClick={() => append('0')}>0</button>
-          <button row-start-4 col-start-3 row-end-5 col-end-4 onClick={() => append('.')}>.</button>
-          <button row-start-1 col-start-4 row-end-3 col-end-5 onClick={clear}>清空</button>
-          <button row-start-3 col-start-4 row-end-5 col-end-5 bg='#fcafb8' text-white
-            onClick={() => { }}>提交</button>
+          <button type='button' row-start-1 col-start-2 row-end-2 col-end-3 onClick={() => append('2')}>2</button>
+          <button type='button' row-start-1 col-start-3 row-end-2 col-end-4 onClick={() => append('3')}>3</button>
+          <button type='button' row-start-2 col-start-1 row-end-3 col-end-2 onClick={() => append('4')}>4</button>
+          <button type='button' row-start-1 col-start-1 row-end-2 col-end-2 onClick={() => append('1')}>1</button>
+          <button type='button' row-start-2 col-start-2 row-end-3 col-end-3 onClick={() => append('5')}>5</button>
+          <button type='button' row-start-2 col-start-3 row-end-3 col-end-4 onClick={() => append('6')}>6</button>
+          <button type='button' row-start-3 col-start-1 row-end-4 col-end-2 onClick={() => append('7')}>7</button>
+          <button type='button' row-start-3 col-start-2 row-end-4 col-end-3 onClick={() => append('8')}>8</button>
+          <button type='button' row-start-3 col-start-3 row-end-4 col-end-4 onClick={() => append('9')}>9</button>
+          <button type='button' row-start-4 col-start-1 row-end-5 col-end-3 onClick={() => append('0')}>0</button>
+          <button type='button' row-start-4 col-start-3 row-end-5 col-end-4 onClick={() => append('.')}>.</button>
+          <button type='button' row-start-1 col-start-4 row-end-3 col-end-5 onClick={clear}>清空</button>
+          <button type='submit' row-start-3 col-start-4 row-end-5 col-end-5 bg='#fcafb8'
+            text-white onClick={onSubmit}> 提交 </button>
         </div>
       </div>
     </>
