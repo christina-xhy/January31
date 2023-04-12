@@ -1,5 +1,8 @@
 import { Link } from 'react-router-dom'
+import useSwr from 'swr'
 import { Icon } from '../../components/Icon'
+import { useAjax } from '../../lib/ajax'
+import { useTagsStore } from '../../stores/useTagsStore'
 
 interface Props {
   kind: Item['kind']
@@ -7,17 +10,13 @@ interface Props {
   onChange?: (ids: Item['tag_ids']) => void
 }
 export const Tags: React.FC<Props> = (props) => {
-  const tags = Array.from({ length: 33 }).map((tag, index) => ({
-    id: index,
-    kind: 'expenses',
-    user_id: 1,
-    name: `打车${index}`,
-    sign: '😊',
-    deleted_at: '2000-01-01T00:00:00.000Z',
-    created_at: '2000-01-01T00:00:00.000Z',
-    updated_at: null,
-  }))
   const { kind } = props
+  const { list, setList } = useTagsStore()
+  const { get } = useAjax({ showLoading: true, handleError: true })
+  useSwr('/api/v1/tags', async (path) => {
+    const response = await get<Resources<Tag>>(path)
+    setList(response.data.resources)
+  })
   return (
     <div>
       <ol grid grid-cols='[repeat(auto-fit,48px)]' justify-center gap-x-32px gap-y-16px
@@ -31,7 +30,7 @@ export const Tags: React.FC<Props> = (props) => {
             </span>
           </Link>
         </li>
-        {tags.map(tag =>
+        {list.map(tag =>
           <li key={tag.id} w-48px flex justify-center items-center flex-col onClick={() => { props.onChange?.([tag.id]) }}>
             {
               props.value?.includes(tag.id)
