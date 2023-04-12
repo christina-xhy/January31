@@ -1,5 +1,44 @@
+import { faker } from "@faker-js/faker"
 import { MockMethod } from "vite-plugin-mock"
 import { ResponseParams } from "./mock"
+
+let id = 0
+const createId = () => {
+    id += 1
+    return id
+}
+// id 自增
+const create = (attr?: Partial<Tag>): Tag => {
+    return {
+        id: createId(),
+        name: `标签`,
+        sign: faker.internet.emoji(),
+        deleted_at: null,
+        user_id: 1,
+        created_at: faker.date.past().toISOString(),
+        updated_at: faker.date.past().toISOString(),
+        kind: 'expenses',
+        ...attr
+    }
+}
+// 创建一个item
+const createList = (n: number, attr?: Partial<Tag>): Tag[] => {
+    return Array.from({ length: 10 }).map(() => create())
+}
+// 创建多个item
+const createResponse = ({ count = 10, perPage = 10, page = 1 }, attr?: Partial<Tag>): Resources<Tag> => {
+    const sendCount = (page - 1) * perPage
+    const leftcount = count - sendCount
+    // 如果超出了count的总数，不再加载新的数据，返回空的[]item
+    return {
+        resources: leftcount > 0 ? createList(Math.min(leftcount, perPage), attr) : [],
+        pager: {
+            page,
+            per_page: perPage,
+            count,
+        }
+    }
+}
 
 export const tagsMock: MockMethod = {
     url: '/api/v1/tags',
@@ -7,24 +46,7 @@ export const tagsMock: MockMethod = {
     statusCode: 200,
     timeout: 1000,
     response: ({ query }: ResponseParams): Resources<Tag> => {
-        const tags = Array.from({ length: 100 }).map<Tag>((tag, index) => ({
-            id: index,
-            kind: 'expenses',
-            user_id: 1,
-            name: `打车${index}`,
-            sign: '😊',
-            updated_at: '2000-01-01T00:00:00.000Z',
-            created_at: '2000-01-01T00:00:00.000Z',
-            deleted_at: null,
-        }))
-        return {
-            resources: tags,
-            pager: {
-                page: 1,
-                per_page: 20,
-                count: 20
-            }
-        }
+        return createResponse({ count: 3, perPage: 50, page: parseInt(query.page) || 1 })
     }
     // query是Mock，response中的属性,设置path路径
 }

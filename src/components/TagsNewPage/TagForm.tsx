@@ -22,7 +22,7 @@ export const TagForm: React.FC<Props> = (props) => {
         }
         setData({ kind })
     }, [searchParams])
-    
+
     const params = useParams()
     useEffect(() => {
         if (type !== 'edit') { return }
@@ -51,7 +51,7 @@ export const TagForm: React.FC<Props> = (props) => {
         <div>
             <form onSubmit={onSubmit} p-16px flex flex-col gap-y-8px>
                 <Input type='text' label="标签名" error={error.name?.[0]} value={data.name} onChange={name => setData({ name })} />
-                <Input type='emoji' label={<span>图标<span text-24px>{data.sign}</span></span>}
+                <Input type='emoji' label={<span h-26px >图标<span text-24px h-26px>{data.sign}</span></span>}
                     value={data.sign} onChange={sign => setData({ sign })} error={error.sign?.[0]} />
                 <p text-center py-24px p-t-8px>记账时长按标签，即可编辑</p>
                 <div>

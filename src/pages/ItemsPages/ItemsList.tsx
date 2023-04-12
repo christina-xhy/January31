@@ -22,7 +22,8 @@ interface Props {
 export const ItemsList: React.FC<Props> = () => {
   const { get } = useAjax({})
   const { data, error, size, setSize } = useSWRInfinite(
-    getKey, async path => (await get<Resources<Item>>(path)).data
+    getKey, async path => (await get<Resources<Item>>(path)).data,
+    { revalidateFirstPage: false }
   )
   const onLoadMore = () => {
     setSize(size + 1)

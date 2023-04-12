@@ -13,21 +13,23 @@ interface Props {
   value?: Item['tag_ids']
   onChange?: (ids: Item['tag_ids']) => void
 }
-// 一、 确定请求的次数  二、返回请求的网页页面
-const getKey = (pageIndex: number, prev: Resources<Item>) => {
-  if (prev) {
-    const sendCount = (prev.pager.page - 1) * prev.pager.per_page + prev.resources.length
-    const count = prev.pager.count
-    if (sendCount >= count) { return null }
-  }
-  return `/api/v1/tags?page=${pageIndex + 1}`
-} // 返回当前请求的页码 + 如果没有前一页，一定发送第一页请求
 
 export const Tags: React.FC<Props> = (props) => {
   const { kind } = props
+  // 一、 确定请求的次数  二、返回请求的网页页面
+  const getKey = (pageIndex: number, prev: Resources<Item>) => {
+    if (prev) {
+      const sendCount = (prev.pager.page - 1) * prev.pager.per_page + prev.resources.length
+      const count = prev.pager.count
+      if (sendCount >= count) { return null }
+    }
+    return `/api/v1/tags?page=${pageIndex + 1}&kind=${kind}`
+  } // 返回当前请求的页码 + 如果没有前一页，一定发送第一页请求
+
   const { get } = useAjax({ showLoading: true, handleError: true })
   const { data, error, size, setSize } = useSWRInfinite(
-    getKey, async path => (await get<Resources<Tag>>(path)).data
+    getKey, async path => (await get<Resources<Tag>>(path)).data,
+    { revalidateFirstPage: false }
   )
   const onLoadMore = () => {
     setSize(size + 1)
@@ -62,8 +64,8 @@ export const Tags: React.FC<Props> = (props) => {
             </Link>
           </li>
           {
-            data.map(({ resources }, index) => {
-              return resources.map((tag, index) =>
+            data.map(({ resources }) => {
+              return resources.map((tag) =>
                 <li key={tag.id} w-48px flex justify-center items-center flex-col onClick={() => { props.onChange?.([tag.id]) }}>
                   {
                     props.value?.includes(tag.id)
@@ -80,7 +82,7 @@ export const Tags: React.FC<Props> = (props) => {
         </ol>
         {error && <Div>数据加载失败，请刷新页面</Div>}
         {!hasMore
-          ? <Div>没有更多数据了</Div>
+          ? page === 1 && last.resources.length === 0 ? <Div>点击加号，自定义新标签</Div> : <Div>没有更多数据了</Div>
           : isLoading
             ? <Div>数据正在加载中...</Div>
             : <Div> <button j-btn onClick={onLoadMore}>加载更多</button></Div>
