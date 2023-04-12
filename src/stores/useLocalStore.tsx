@@ -1,5 +1,4 @@
 import { create } from 'zustand'
-
 interface Local{
     hasReadWelcomes:boolean
     setHasReadWelcomes: (read:boolean) => void

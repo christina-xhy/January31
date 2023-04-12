@@ -1,20 +1,14 @@
 // import { DatePicker } from 'antd-mobile'
 // import dayjs from 'dayjs'
-import { useState } from 'react'
-import { Icon } from '../../components/Icon'
-import { usePopup } from '../../hooks/usePopup'
-import { DatePickers } from '../../components/DatePickers'
-import { time } from '../../lib/time'
+import { ReactNode, useState } from 'react'
+
 interface Props {
   className: string
+  itemDate: ReactNode
 }
-export const DateAndAmount: React.FC<Props> = (props) => {
-  const { className } = props
+export const ItemAmount: React.FC<Props> = (props) => {
+  const { className, itemDate } = props
   const [output, _setOutput] = useState('0')
-  const [date, setDate] = useState<any>(new Date())
-  const { toggle, popup, hide } = usePopup(false, < DatePickers
-    onConfirm={d => { setDate(d); hide() }}
-    onCancel={() => hide()} />, 'bottom')
   // const [createdAt, setCreatedAt] = useState<any>(new Date())
   // const [visible, setVisible] = useState<boolean>(false)
   // const onChange = (value: object) => {
@@ -47,22 +41,21 @@ export const DateAndAmount: React.FC<Props> = (props) => {
 
   return (
     <>
-      {popup}
       <div className={className}>
         <div flex p-t-15px p-b-16px px-16px border-t-1px border-t='#ddd' >
-          <span flex gap-x-8px items-center onClick={toggle} >
+          {itemDate}
+          {/* <span flex gap-x-8px items-center >
             <Icon className='shrink-0 grow-0 w-24px h-24px' name='date' />
             <span grow-0 shrink-0 text-12px >
-              {/* <DatePicker visible={visible}
+              <DatePicker visible={visible}
                 onClose={() => { setVisible(false) }}
                 onConfirm={(value) => { onChange(value) }}
               />
               <div onClick={() => { setVisible(true) }}>
                 <div>{dayjs(createdAt).format('YYYY-MM-DD')}</div>
-              </div> */}
-              {time(date).format()}
+              </div>
             </span>
-          </span>
+          </span> */}
           <code grow-1 items-center shrink-1 text-right text-20px color='pink' >{output}</code>
         </div>
         <div py-1px grid grid-cols='[repeat(4,1fr)]' grid-rows='[repeat(4,48px)]'

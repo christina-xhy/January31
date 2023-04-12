@@ -20,7 +20,7 @@ export const SignInPage: React.FC = () => {
     e.preventDefault()
     const onSubmitError = (error: AxiosError<{ errors: FormError<typeof data> }>) => {
       //后端的error直接可以setError，特殊情况需要格式转换
-      //检查校验格式以及
+      //检查校验格式
       setError(error.response?.data.errors ?? {})
       throw error
     }
