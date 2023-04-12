@@ -15,15 +15,15 @@ interface Props {
 }
 export const ItemAmount: React.FC<Props> = (props) => {
   const { className, itemDate, value, onChange, dateValue, dateChange, onSubmit } = props
-  const [output, _setOutput] = useState(() => value?.toString() ?? '0')
+  const [output, _setOutput] = useState(() => value ? ((value / 100).toString()) : '0')
   //拦截器
   const setOutput = (char: string) => {
     const dotIndex = char.indexOf('.')
     if (dotIndex >= 0 && char.length - dotIndex > 3) { return }
     if (char.length > 16) { return }
     _setOutput(char)
-    //字符串格式才能保住小数点
-    onChange?.(parseFloat(char))
+    //字符串格式才能保住小数点,*100是为了确保正确的单位
+    onChange?.(parseFloat(char) * 100)
   }
   const append = (char: string) => {
     switch (char) {

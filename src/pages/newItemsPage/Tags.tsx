@@ -32,7 +32,7 @@ export const Tags: React.FC<Props> = (props) => {
           </Link>
         </li>
         {tags.map(tag =>
-          <li w-48px flex justify-center items-center flex-col onClick={() => { props.onChange?.([tag.id]) }}>
+          <li key={tag.id} w-48px flex justify-center items-center flex-col onClick={() => { props.onChange?.([tag.id]) }}>
             {
               props.value?.includes(tag.id)
                 ? <span block w-48px h-48px rounded='24px' bg='#EFEFEF' flex justify-center items-center
