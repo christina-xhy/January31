@@ -1,24 +1,27 @@
-// import { DatePicker } from 'antd-mobile'
-// import dayjs from 'dayjs'
+import { DatePicker } from 'antd-mobile'
+import dayjs from 'dayjs'
+import { Icon } from '../../components/Icon'
 import { ReactNode, useState } from 'react'
+import { time } from '../../lib/time'
 
 interface Props {
   className: string
   itemDate: ReactNode
+  value?: number
+  onChange?: (amount: number) => void
+  dateValue?: Date | string
+  dateChange: (date: string) => void
 }
 export const ItemAmount: React.FC<Props> = (props) => {
-  const { className, itemDate } = props
-  const [output, _setOutput] = useState('0')
-  // const [createdAt, setCreatedAt] = useState<any>(new Date())
-  // const [visible, setVisible] = useState<boolean>(false)
-  // const onChange = (value: object) => {
-  //   setCreatedAt(value)
-  // }
+  const { className, itemDate, value, onChange, dateValue, dateChange } = props
+  const [output, _setOutput] = useState(() => value?.toString() ?? '0')
+  //拦截器
   const setOutput = (char: string) => {
     const dotIndex = char.indexOf('.')
     if (dotIndex >= 0 && char.length - dotIndex > 3) { return }
     if (char.length > 16) { return }
     _setOutput(char)
+    onChange?.(parseFloat(char))
   }
   const append = (char: string) => {
     switch (char) {
@@ -38,24 +41,29 @@ export const ItemAmount: React.FC<Props> = (props) => {
 
   }
   const clear = () => { setOutput('0') }
+  const [createdAt, setCreatedAt] = useState<any>(new Date())
+  const [visible, setVisible] = useState<boolean>(false)
+  const chooseChange = (date: string) => {
+    dateChange(time(date).isoString)
+  }
 
   return (
     <>
       <div className={className}>
         <div flex p-t-15px p-b-16px px-16px border-t-1px border-t='#ddd' >
           {itemDate}
-          {/* <span flex gap-x-8px items-center >
+          <span flex gap-x-8px items-center >
             <Icon className='shrink-0 grow-0 w-24px h-24px' name='date' />
             <span grow-0 shrink-0 text-12px >
               <DatePicker visible={visible}
                 onClose={() => { setVisible(false) }}
-                onConfirm={(value) => { onChange(value) }}
+                onConfirm={(newDate) => { chooseChange(newDate.toString()) }}
               />
               <div onClick={() => { setVisible(true) }}>
-                <div>{dayjs(createdAt).format('YYYY-MM-DD')}</div>
+                <div>{dayjs(dateValue).format('YYYY-MM-DD')}</div>
               </div>
             </span>
-          </span> */}
+          </span>
           <code grow-1 items-center shrink-1 text-right text-20px color='pink' >{output}</code>
         </div>
         <div py-1px grid grid-cols='[repeat(4,1fr)]' grid-rows='[repeat(4,48px)]'
