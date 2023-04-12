@@ -7,7 +7,7 @@ export const tagsMock: MockMethod = {
     statusCode: 200,
     timeout: 1000,
     response: ({ query }: ResponseParams): Resources<Tag> => {
-        const tags = Array.from({ length: 20 }).map<Tag>((tag, index) => ({
+        const tags = Array.from({ length: 100 }).map<Tag>((tag, index) => ({
             id: index,
             kind: 'expenses',
             user_id: 1,

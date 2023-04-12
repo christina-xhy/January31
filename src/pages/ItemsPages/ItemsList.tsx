@@ -77,7 +77,8 @@ export const ItemsList: React.FC<Props> = () => {
           ? <Div>没有更多数据了</Div>
           : isLoading
             ? <Div>数据正在加载中...</Div>
-            : <Div> <button j-btn onClick={onLoadMore}>加载更多</button></Div>}
+            : <Div> <button j-btn onClick={onLoadMore}>加载更多</button></Div>
+        }
       </>
     )
   }
