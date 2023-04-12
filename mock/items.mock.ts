@@ -43,7 +43,7 @@ const createResponse = ({ count = 10, perPage = 10, page = 1 }, attr?: Partial<I
 
 //使用mock，创建数据
 
-export const itemsMock: MockMethod = {
+export const itemsMock: MockMethod[] = [{
   url: '/api/v1/items',
   method: 'get',
   statusCode: 200,
@@ -52,5 +52,5 @@ export const itemsMock: MockMethod = {
     return createResponse({ count: 91, perPage: 10, page: parseInt(query.page) || 1 })
   }
   // query是Mock，response中的属性,设置path路径
-}
+}]
 

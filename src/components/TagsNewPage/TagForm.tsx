@@ -1,8 +1,10 @@
 import { Input } from "../../components/Input/Input"
 import { useEffect, FormEventHandler } from "react"
-import { useParams, useSearchParams } from "react-router-dom"
-import { validate, hasError } from "../../lib/validate"
+import { useNavigate, useParams, useSearchParams } from "react-router-dom"
+import { validate, hasError, FormError } from "../../lib/validate"
 import { useCreateTagStore } from "../../stores/useCreateTagStore"
+import { useAjax } from "../../lib/ajax"
+import { Axios, AxiosError } from "axios"
 
 type Props = {
     type: 'create' | 'edit'
@@ -12,17 +14,17 @@ export const TagForm: React.FC<Props> = (props) => {
     const { data, error, setData, setError } = useCreateTagStore()
     const { type } = props
     const [searchParams] = useSearchParams()
+    const kind = searchParams.get('kind') ?? ''
 
     useEffect(() => {
         if (type !== 'create') { return }
-        const kind = searchParams.get('kind')
         if (!kind) { throw new Error('kind is required') }
         if (kind !== 'expenses' && kind !== 'income') {
             throw new Error('kind must be expenses or income')
         }
         setData({ kind })
     }, [searchParams])
-
+    const { post } = useAjax({ showLoading: true, handleError: true })
     const params = useParams()
     useEffect(() => {
         if (type !== 'edit') { return }
@@ -30,10 +32,20 @@ export const TagForm: React.FC<Props> = (props) => {
         if (!id) {
             throw new Error('id is required')
         }
-        //发送ajax请求
     }, [])
-
-    const onSubmit: FormEventHandler = (e) => {
+    const onSubmitError = (error: AxiosError<{ errors: FormError<typeof data> }>) => {
+        if (error.response) {
+            const { status } = error.response
+            console.log(error.response)
+            if (status === 422) {
+                const { errors } = error.response.data
+                setError(errors)
+            }
+        }
+        throw error
+    }
+    const nav = useNavigate()
+    const onSubmit: FormEventHandler = async (e) => {
         e.preventDefault()
         const newError = validate(data, [
             { key: 'kind', type: 'required', message: '标签类型必填' },
@@ -43,8 +55,9 @@ export const TagForm: React.FC<Props> = (props) => {
         ])
         setError(newError)
         if (!hasError(newError)) {
-            //发送AJAX请求
-            console.log('no error')
+            const response = await post<Resource<Tag>>('/api/v1/tags', data).catch(onSubmitError)
+            setData(response.data.resource)
+            nav(`/items/new?kind=${encodeURIComponent(kind)}`)
         }
     }
     return (
