@@ -10,6 +10,7 @@ import { useCreateItemStore } from '../../stores/useCreateItemStore'
 import { ItemDate } from './ItemDate'
 import { hasError, validate } from '../../lib/validate'
 import { useAjax } from '../../lib/ajax'
+import { BackIcon } from '../../components/BackIcon'
 
 export const NewItemsPage: React.FC = () => {
   const { data, setData, setError } = useCreateItemStore()
@@ -39,7 +40,7 @@ export const NewItemsPage: React.FC = () => {
   return (
     <div className={s.wrapper} h-screen flex flex-col >
       <Gradient className='grow-0 shrink-0'>
-        <TopNav title='记一笔' icon={<Icon name='back' />} />
+        <TopNav title='记一笔' icon={<BackIcon />} />
       </Gradient>
       <Tabs className='children-flex-1 flex-1 text-center grow-1 shrink-1 overflow-hidden' tabItems={tabItems} classPrefix='itemsNewPage'
         value={data.kind!} onChange={(item) => { setData({ kind: item }) }} />
