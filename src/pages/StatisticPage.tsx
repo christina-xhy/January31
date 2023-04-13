@@ -16,22 +16,39 @@ export const StatisticPage: React.FC = () => {
     const [timeRange, setTimeRange] = useState<TimeRange>('thisMonth')
     const { get } = useAjax({ showLoading: false, handleError: true })
     const [kind, setKind] = useState('')
-    const generateStartAndEnd = () => {
+    const generateStartAndDefaultItems = () => {
+        const defaultItems: { x: string; y: number }[] = []
         if (timeRange === 'thisMonth') {
-            const start = time().firstDayOfMonth.format('yyyy-MM-dd')
-            const end = time().lastDayOfMonth.add(1, 'day').format('yyyy-MM-dd')
-            return { start, end }
+            const startTime = time().firstDayOfMonth
+            const start = startTime.format('yyyy-MM-dd')
+            const endTime = time().lastDayOfMonth.add(1, 'day')
+            const end = endTime.format('yyyy-MM-dd')
+            for (let i = 0; i < startTime.dayCountOfMonth; i++) {
+                const x = startTime.clone.add(i, 'day').format('yyyy-MM-dd')
+                defaultItems.push({ x, y: 0 })
+            }
+            return { start, end, defaultItems }
         } else {
             return { start: '', end: '' }
         }
     }
-    const { start, end } = generateStartAndEnd()
+
+    const { start, end, defaultItems } = generateStartAndDefaultItems()
     const { data: items } = useSWR(`/api/v1/items/summary?happened_after=${start}&happened_before=${end}&kind=${kind}&group_by='happen_at'`,
         async (path) => {
             const response = await get<{ groups: { happen_at: string; amount: number }[]; total: number }>(path)
             return response.data.groups
                 .map(({ happen_at, amount }) => ({ x: happen_at, y: amount }))
         })
+    const normalizedItems = defaultItems?.map((defaultItem) => {
+        const item = items?.find((item) => item.x === defaultItem.x)
+        if (item) {
+            return item
+        } else {
+            return defaultItem
+        }
+    })
+    console.log(normalizedItems)
     useEffect(() => {
         console.log(items)
 
@@ -75,7 +92,7 @@ export const StatisticPage: React.FC = () => {
                     ]} value={kind} onChange={value => setKind(value)} />
                 </div>
             </div>
-            <LineChart className={'h-200px  m-b-24px'} items={items} />
+            <LineChart className={'h-200px  m-b-24px'} items={normalizedItems} />
             <PieChart className={'h-360px '} items={items2} />
             <RankChart className={'h-300px'} items={item3} />
         </div>
