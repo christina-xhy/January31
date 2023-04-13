@@ -1,16 +1,13 @@
 import { useNavigate, useParams } from "react-router-dom"
 import { BackIcon } from "../components/BackIcon"
 import { Gradient } from "../components/Gradient"
-import { Icon } from "../components/Icon"
 import { TagForm } from "../components/TagsNewPage/TagForm"
 import { TopNav } from "../components/TopNav"
 import { useAjax } from "../lib/ajax"
+import { comfirmable } from "../lib/comfirmable"
 
 export const TagsEditPage: React.FC = () => {
-    const comfirmable = (fn: () => void) => () => {
-        const result = window.confirm('确定要删除吗')
-        if (result) { fn() }
-    }
+
     const nav = useNavigate()
     const { id } = useParams()
     const { destroy } = useAjax({ showLoading: true, handleError: true })

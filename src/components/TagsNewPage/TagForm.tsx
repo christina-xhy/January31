@@ -15,7 +15,7 @@ export const TagForm: React.FC<Props> = (props) => {
     const { data, error, setData, setError } = useCreateTagStore()
     const { type } = props
     const [searchParams] = useSearchParams()
-    const { post, get, patch } = useAjax({ showLoading: true, handleError: true })
+    const { post, get, patch } = useAjax({ showLoading: false, handleError: true })
 
     //新建标签页面，获取到地址栏的kind并传入data，重写地址栏
     const kind = searchParams.get('kind') ?? ''
@@ -49,7 +49,6 @@ export const TagForm: React.FC<Props> = (props) => {
     const onSubmitError = (error: AxiosError<{ errors: FormError<typeof data> }>) => {
         if (error.response) {
             const { status } = error.response
-            console.log(error.response)
             if (status === 422) {
                 const { errors } = error.response.data
                 setError(errors)

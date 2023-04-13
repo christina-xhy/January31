@@ -9,7 +9,7 @@ const MyIcon = styled(Icon)`
     width:32px;height:32px;margin-right:16px;
 `
 const items = [
-  { key: 'chart', icon: 'chart', text: '统计图表', to: '/chart' },
+  { key: 'chart', icon: 'chart', text: '统计图表', to: '/statistics' },
   { key: 'export', icon: 'export', text: '导出数据', to: '/export' },
   { key: 'tags', icon: 'category', text: '自定义分类', to: '/tags' },
   { key: 'notice', icon: 'notice', text: '记账提醒', to: '/notice' },
@@ -21,7 +21,7 @@ export const Menu: React.FC<Props> = ({ className }) => {
         return (
           <li key={item.key}>
             <NavLink flex items-center px-16px py-8px mb-4px to={item.to}>
-              <MyIcon name = {item.icon} />
+              <MyIcon name={item.icon} />
               {item.text}
             </NavLink>
           </li>

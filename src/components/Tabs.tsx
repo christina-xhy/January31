@@ -19,7 +19,7 @@ export const Tabs = <T extends string>(props: Props<T>) => {
   return (
     <div className={c(className, classPrefix)} flex flex-col>
       {/* 设置ol的classPrefix，有可能是不同组件的ol */}
-      <ol flex text-white children-px-24px children-py-12px bg="[rgb(255,230,228)]"
+      <ol flex text-black children-px-24px children-py-12px bg="[rgb(255,230,228)]"
         grow-0 shrink-0 className={classPrefix ? `${classPrefix}-menu` : ''}>
         {tabItems.map(item =>
           <li key={item.key} className={

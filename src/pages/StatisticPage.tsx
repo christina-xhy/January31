@@ -1,4 +1,5 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import useSWR from "swr"
 import { Gradient } from "../components/Gradient"
 import { Icon } from "../components/Icon"
 import { Input } from "../components/Input/Input"
@@ -7,21 +8,35 @@ import { PieChart } from "../components/PieChart"
 import { RankChart } from "../components/RankChart"
 import { TimeRange, TimeRangePicker } from "../components/TimeRangePicker"
 import { TopNav } from "../components/TopNav"
+import { useAjax } from "../lib/ajax"
+import { time } from "../lib/time"
 
 
 export const StatisticPage: React.FC = () => {
     const [timeRange, setTimeRange] = useState<TimeRange>('thisMonth')
-    const [x, setX] = useState('')
-    const items = [
-        { date: '20223-01-01', value: 100000 },
-        { date: '20223-01-03', value: 300000 },
-        { date: '20223-01-05', value: 400000 },
-        { date: '20223-01-05', value: 20000 },
-        { date: '20223-01-10', value: 400000 },
-        { date: '20223-01-15', value: 80000 },
-        { date: '20223-01-25', value: 450000 },
-        { date: '20223-02-18', value: 900000 },
-    ].map(item => ({ x: item.date, y: item.value / 100 }))
+    const { get } = useAjax({ showLoading: false, handleError: true })
+    const [kind, setKind] = useState('')
+    const generateStartAndEnd = () => {
+        if (timeRange === 'thisMonth') {
+            const start = time().firstDayOfMonth.format('yyyy-MM-dd')
+            const end = time().lastDayOfMonth.add(1, 'day').format('yyyy-MM-dd')
+            return { start, end }
+        } else {
+            return { start: '', end: '' }
+        }
+    }
+    const { start, end } = generateStartAndEnd()
+    const { data: items } = useSWR(`/api/v1/items/summary?happened_after=${start}&happened_before=${end}&kind=${kind}&group_by='happen_at'`,
+        async (path) => {
+            const response = await get<{ groups: { happen_at: string; amount: number }[]; total: number }>(path)
+            return response.data.groups
+                .map(({ happen_at, amount }) => ({ x: happen_at, y: amount }))
+        })
+    useEffect(() => {
+        console.log(items)
+
+    }, [items])
+
     const items2 = [
         { tag: { name: '吃饭', sign: '😊' }, amount: 10000 },
         { tag: { name: 'car', sign: 'xx' }, amount: 10800 },
@@ -43,14 +58,21 @@ export const StatisticPage: React.FC = () => {
                     <Icon name='back' ></Icon>
                 } />
             </Gradient>
-            <TimeRangePicker selected={timeRange} onSelect={setTimeRange} />
+            <TimeRangePicker selected={timeRange} onSelect={setTimeRange}
+                timeRanges={[
+                    { key: 'thisMonth', text: '本月' },
+                    { key: 'lastMonth', text: '上月' },
+                    { key: 'twoMonthsAgo', text: '两个月内' },
+                    { key: 'threeMonthsAgo', text: '三个月内' },
+
+                ]} />
             <div flex px-16px grow-0 shrink-0 items-center gap-x-16px p-16px>
                 <span>类型</span>
                 <div grow-1 shrink-1>
                     <Input type='select' options={[
                         { text: '支出', value: 'expenses' },
                         { text: '收入', value: 'income' }
-                    ]} value={x} onChange={value => setX(value)} />
+                    ]} value={kind} onChange={value => setKind(value)} />
                 </div>
             </div>
             <LineChart className={'h-200px  m-b-24px'} items={items} />
