@@ -1,8 +1,8 @@
-import { useRef, TouchEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import useSWRInfinite from 'swr/infinite'
 import { Icon } from '../../components/Icon'
+import { LongPressable } from '../../components/LongPressable'
 import { useAjax } from '../../lib/ajax'
 
 const Div = styled.div`
@@ -40,31 +40,6 @@ export const Tags: React.FC<Props> = (props) => {
   const isLoadingMore = data?.[size - 1] === undefined && !error
   const isLoading = isLoadingInitialData || isLoadingMore
   const nav = useNavigate()
-  const touchTimer = useRef<number>()
-  const touchPosition = useRef<{ x?: number, y?: number }>({ x: undefined, y: undefined })
-  const onTouchStart = (e: TouchEvent, id: Tag['id']) => {
-    touchTimer.current = window.setTimeout(() => {
-      nav(`/tags/${id}`)
-    }, 1000)
-    const { clientX: x, clientY: y } = e.touches[0]
-    touchPosition.current = { x, y }
-  }
-  const onTouchMove = (e: TouchEvent, id: Tag['id']) => {
-    const { clientX: newX, clientY: newY } = e.touches[0]
-    const { x, y } = touchPosition.current
-    if (x === undefined || y === undefined) { return }
-    const distance = Math.sqrt((newX - x) ** 2 + (newY - y) ** 2)
-    if (distance > 10) {
-      window.clearTimeout(touchTimer.current)
-      touchTimer.current = undefined
-    }
-  }
-  const onTouchEnd = (e: TouchEvent<HTMLLIElement>, id: Tag['id']) => {
-    if (touchTimer.current) {
-      window.clearTimeout(touchTimer.current)
-      touchTimer.current = undefined
-    }
-  }
 
   if (!data) {
     return (
@@ -94,34 +69,34 @@ export const Tags: React.FC<Props> = (props) => {
           {
             data.map(({ resources }) => {
               return resources.map((tag) =>
-                <li key={tag.id} w-48px flex justify-center items-center flex-col onClick={() => {
+                <li key={tag.id} onClick={() => {
                   props.onChange?.([tag.id])
-                }}
-                  onTouchStart={(e) => onTouchStart(e, tag.id)}
-                  onTouchMove={(e) => onTouchMove(e, tag.id)}
-                  onTouchEnd={(e) => onTouchEnd(e, tag.id)}
-                >
-                  {
-                    props.value?.includes(tag.id)
-                      ? <span block w-48px h-48px rounded='24px' bg='#EFEFEF' flex justify-center items-center
-                        text-24px b-1 b='#fbaebe' >{tag.sign}</span>
-                      : <span block w-48px h-48px rounded='24px' bg='#EFEFEF' flex justify-center items-center
-                        text-24px b-1 b-transparent >{tag.sign}</span>
-                  }
-                  <span text-12px text='#666'>{tag.name}</span>
+                }}>
+                  <LongPressable className='w-48px flex justify-center items-center flex-col gap-y-8px'
+                    onEnd={() => { nav(`/tags/${tag.id}`) }}>
+                    {
+                      props.value?.includes(tag.id)
+                        ? <span block w-48px h-48px rounded='24px' bg='#EFEFEF' flex justify-center items-center
+                          text-24px b-1 b='#fbaebe' >{tag.sign}</span>
+                        : <span block w-48px h-48px rounded='24px' bg='#EFEFEF' flex justify-center items-center
+                          text-24px b-1 b-transparent >{tag.sign}</span>
+                    }
+                    <span text-12px text='#666' > {tag.name}</span>
+                  </LongPressable>
                 </li>
               )
             })
           }
-        </ol>
+        </ol >
         {error && <Div>数据加载失败，请刷新页面</Div>}
-        {!hasMore
-          ? page === 1 && last.resources.length === 0 ? <Div>点击加号，自定义新标签</Div> : <Div>没有更多数据了</Div>
-          : isLoading
-            ? <Div>数据正在加载中...</Div>
-            : <Div> <button j-btn onClick={onLoadMore}>加载更多</button></Div>
+        {
+          !hasMore
+            ? page === 1 && last.resources.length === 0 ? <Div>点击加号，自定义新标签</Div> : <Div>没有更多数据了</Div>
+            : isLoading
+              ? <Div>数据正在加载中...</Div>
+              : <Div> <button j-btn onClick={onLoadMore}>加载更多</button></Div>
         }
-      </div>
+      </div >
     )
   }
 
