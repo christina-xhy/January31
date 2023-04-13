@@ -24,6 +24,7 @@ export const Tags: React.FC<Props> = (props) => {
       const count = prev.pager.count
       if (sendCount >= count) { return null }
     }
+    //通过修改路径，更新渲染tags组件,react的Diff算法，渲染相同组件名的组件
     return `/api/v1/tags?page=${pageIndex + 1}&kind=${kind}`
   } // 返回当前请求的页码 + 如果没有前一页，一定发送第一页请求
 
@@ -58,7 +59,7 @@ export const Tags: React.FC<Props> = (props) => {
         <ol grid grid-cols='[repeat(auto-fit,48px)]' justify-center gap-x-32px gap-y-16px
           py-16px px-8px >
           <li>
-            {/* 新增表情 */}
+            {/* 新增表情 点击 + 号 ，同时携带路径kind，进入新建标签页面 */}
             <Link to={`/tags/new?kind=${kind}`}>
               <span block w-48px h-48px rounded='24px' bg='EFEFEF' flex justify-center items-center
                 text-24px b-1 b='#fda4af' text='#fda4af'>
@@ -72,6 +73,7 @@ export const Tags: React.FC<Props> = (props) => {
                 <li key={tag.id} onClick={() => {
                   props.onChange?.([tag.id])
                 }}>
+                  {/* 创建新tag，进入查看标签页面，带上id路径为参数 */}
                   <LongPressable className='w-48px flex justify-center items-center flex-col gap-y-8px'
                     onEnd={() => { nav(`/tags/${tag.id}`) }}>
                     {

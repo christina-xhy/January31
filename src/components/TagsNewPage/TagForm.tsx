@@ -4,7 +4,8 @@ import { useNavigate, useParams, useSearchParams } from "react-router-dom"
 import { validate, hasError, FormError } from "../../lib/validate"
 import { useCreateTagStore } from "../../stores/useCreateTagStore"
 import { useAjax } from "../../lib/ajax"
-import { Axios, AxiosError } from "axios"
+import { AxiosError } from "axios"
+import useSWR from 'swr'
 
 type Props = {
     type: 'create' | 'edit'
@@ -14,8 +15,10 @@ export const TagForm: React.FC<Props> = (props) => {
     const { data, error, setData, setError } = useCreateTagStore()
     const { type } = props
     const [searchParams] = useSearchParams()
-    const kind = searchParams.get('kind') ?? ''
+    const { post, get, patch } = useAjax({ showLoading: true, handleError: true })
 
+    //新建标签页面，获取到地址栏的kind并传入data，重写地址栏
+    const kind = searchParams.get('kind') ?? ''
     useEffect(() => {
         if (type !== 'create') { return }
         if (!kind) { throw new Error('kind is required') }
@@ -24,15 +27,25 @@ export const TagForm: React.FC<Props> = (props) => {
         }
         setData({ kind })
     }, [searchParams])
-    const { post } = useAjax({ showLoading: true, handleError: true })
+
+
+    //查看标签页， 获取地址栏的id，进入编辑页面，重写地址栏
     const params = useParams()
+    const id = params.id
+    const { data: tag } = useSWR(`/api/v1/tags/${id}`, async (path) =>
+        (await get<Resource<Tag>>(path)).data.resource
+    )
     useEffect(() => {
         if (type !== 'edit') { return }
-        const id = params.id
         if (!id) {
             throw new Error('id is required')
         }
-    }, [])
+        if (tag) {
+            setData(tag)
+        }
+    }, [tag])
+
+    //统一发送请求，统一处理错误
     const onSubmitError = (error: AxiosError<{ errors: FormError<typeof data> }>) => {
         if (error.response) {
             const { status } = error.response
@@ -54,8 +67,12 @@ export const TagForm: React.FC<Props> = (props) => {
             { key: 'sign', type: 'required', message: '符号必填' },
         ])
         setError(newError)
+        // 收集新建标签的数据，post到服务器，并且上传kind路径
         if (!hasError(newError)) {
-            const response = await post<Resource<Tag>>('/api/v1/tags', data).catch(onSubmitError)
+            const promise = type === 'create'
+                ? post<Resource<Tag>>('/api/v1/tags', data)
+                : patch<Resource<Tag>>(`/api/v1/tags/${id}`, data)
+            const response = await promise.catch(onSubmitError)
             setData(response.data.resource)
             nav(`/items/new?kind=${encodeURIComponent(kind)}`)
         }

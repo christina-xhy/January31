@@ -11,7 +11,7 @@ const createId = () => {
 const create = (attr?: Partial<Tag>): Tag => {
     return {
         id: createId(),
-        name: `标签`,
+        name: faker.lorem.word(),
         sign: faker.internet.emoji(),
         deleted_at: null,
         user_id: 1,
@@ -23,7 +23,7 @@ const create = (attr?: Partial<Tag>): Tag => {
 }
 // 创建一个item
 const createList = (n: number, attr?: Partial<Tag>): Tag[] => {
-    return Array.from({ length: 50 }).map(() => create())
+    return Array.from({ length: n }).map(() => create())
 }
 // 创建多个item
 const createResponse = ({ count = 10, perPage = 10, page = 1 }, attr?: Partial<Tag>): Resources<Tag> => {
@@ -47,11 +47,32 @@ export const tagsMock: MockMethod[] = [{
     timeout: 1000,
     // query是Mock，response中的属性,设置path路径
     response: ({ query }: ResponseParams): Resources<Tag> => {
-        return createResponse({ count: 91, perPage: 50, page: parseInt(query.page) || 1 })
+        return createResponse({ count: 3, perPage: 50, page: parseInt(query.page) || 1 })
     }
 }, {
     url: '/api/v1/tags',
     method: 'post',
+    statusCode: 200,
+    timeout: 100,
+    response: ({ query }: ResponseParams): Resource<Tag> => {
+        return {
+            resource: create()
+        }
+    },
+}, {
+    url: '/api/v1/tags/:id',
+    method: 'get',
+    statusCode: 200,
+    timeout: 100,
+    response: ({ query }: ResponseParams): Resource<Tag> => {
+        return {
+            resource: create()
+        }
+    },
+},
+{
+    url: '/api/v1/tags/:id',
+    method: 'patch',
     statusCode: 200,
     timeout: 100,
     response: ({ query }: ResponseParams): Resource<Tag> => {

@@ -52,7 +52,12 @@ export const useAjax = (options: Options) => {
         if (showLoading) { hide() }
       })
     },
-    patch: () => { },
+    patch: <T>(path: string, data: JSONValue) => {
+      if (showLoading) { show() }
+      return axios.patch<T>(path, data).catch(onError).finally(() => {
+        if (showLoading) { hide() }
+      })
+    },
     delete: () => { }
   }
   return ajax
