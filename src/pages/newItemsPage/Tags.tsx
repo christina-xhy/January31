@@ -1,4 +1,5 @@
-import { Link } from 'react-router-dom'
+import { useRef, TouchEvent } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
 import styled from 'styled-components'
 import useSWRInfinite from 'swr/infinite'
 import { Icon } from '../../components/Icon'
@@ -38,6 +39,33 @@ export const Tags: React.FC<Props> = (props) => {
   const isLoadingInitialData = !data && !error
   const isLoadingMore = data?.[size - 1] === undefined && !error
   const isLoading = isLoadingInitialData || isLoadingMore
+  const nav = useNavigate()
+  const touchTimer = useRef<number>()
+  const touchPosition = useRef<{ x?: number, y?: number }>({ x: undefined, y: undefined })
+  const onTouchStart = (e: TouchEvent, id: Tag['id']) => {
+    touchTimer.current = window.setTimeout(() => {
+      nav(`/tags/${id}`)
+    }, 1000)
+    const { clientX: x, clientY: y } = e.touches[0]
+    touchPosition.current = { x, y }
+  }
+  const onTouchMove = (e: TouchEvent, id: Tag['id']) => {
+    const { clientX: newX, clientY: newY } = e.touches[0]
+    const { x, y } = touchPosition.current
+    if (x === undefined || y === undefined) { return }
+    const distance = Math.sqrt((newX - x) ** 2 + (newY - y) ** 2)
+    if (distance > 10) {
+      window.clearTimeout(touchTimer.current)
+      touchTimer.current = undefined
+    }
+  }
+  const onTouchEnd = (e: TouchEvent<HTMLLIElement>, id: Tag['id']) => {
+    if (touchTimer.current) {
+      window.clearTimeout(touchTimer.current)
+      touchTimer.current = undefined
+    }
+  }
+
   if (!data) {
     return (
       <Div >
@@ -66,7 +94,13 @@ export const Tags: React.FC<Props> = (props) => {
           {
             data.map(({ resources }) => {
               return resources.map((tag) =>
-                <li key={tag.id} w-48px flex justify-center items-center flex-col onClick={() => { props.onChange?.([tag.id]) }}>
+                <li key={tag.id} w-48px flex justify-center items-center flex-col onClick={() => {
+                  props.onChange?.([tag.id])
+                }}
+                  onTouchStart={(e) => onTouchStart(e, tag.id)}
+                  onTouchMove={(e) => onTouchMove(e, tag.id)}
+                  onTouchEnd={(e) => onTouchEnd(e, tag.id)}
+                >
                   {
                     props.value?.includes(tag.id)
                       ? <span block w-48px h-48px rounded='24px' bg='#EFEFEF' flex justify-center items-center
