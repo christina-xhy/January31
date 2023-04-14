@@ -61,13 +61,6 @@ export const StatisticPage: React.FC = () => {
     })
     console.log(items2)
 
-    const item3 = [
-        { tag: { name: '吃饭', sign: '😊' }, amount: 10000 },
-        { tag: { name: 'car', sign: 'xx' }, amount: 10800 },
-        { tag: { name: 'food', sign: 'xxxxxx' }, amount: 50000 },
-        { tag: { name: 'cloth', sign: 'ww' }, amount: 20000 },
-        { tag: { name: 'masks', sign: 'qq' }, amount: 11000 },
-    ].map((item) => ({ name: item.tag.name, value: item.amount, sign: item.tag.sign }))
     return (
         <div>
             <Gradient>
@@ -94,7 +87,7 @@ export const StatisticPage: React.FC = () => {
             </div>
             <LineChart className={'h-200px  m-b-24px'} items={normalizedItems} />
             <PieChart className={'h-360px '} items={items2} />
-            <RankChart className={'h-300px'} items={item3} />
+            <RankChart className={'h-300px'} items={items2} />
         </div>
     )
 }
