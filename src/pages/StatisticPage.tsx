@@ -9,31 +9,32 @@ import { RankChart } from "../components/RankChart"
 import { TimeRange, TimeRangePicker } from "../components/TimeRangePicker"
 import { TopNav } from "../components/TopNav"
 import { useAjax } from "../lib/ajax"
-import { time } from "../lib/time"
+import { Time, time } from "../lib/time"
 
 
 export const StatisticPage: React.FC = () => {
     const [timeRange, setTimeRange] = useState<TimeRange>('thisMonth')
     const { get } = useAjax({ showLoading: false, handleError: true })
     const [kind, setKind] = useState('')
-    const generateStartAndDefaultItems = () => {
-        const defaultItems: { x: string; y: number }[] = []
+    const generateStartAndEnd = () => {
         if (timeRange === 'thisMonth') {
-            const startTime = time().firstDayOfMonth
-            const start = startTime.format('yyyy-MM-dd')
-            const endTime = time().lastDayOfMonth.add(1, 'day')
-            const end = endTime.format('yyyy-MM-dd')
-            for (let i = 0; i < startTime.dayCountOfMonth; i++) {
-                const x = startTime.clone.add(i, 'day').format('yyyy-MM-dd')
-                defaultItems.push({ x, y: 0 })
-            }
-            return { start, end, defaultItems }
+            const start = time().firstDayOfMonth
+            const end = time().lastDayOfMonth.add(1, 'day')
+            return { start, end }
         } else {
-            return { start: '', end: '' }
+            return { start: time(), end: time() }
         }
     }
+    //生成一个变亮，创建空的数据
+    const generateDefaultItems = (time: Time) => {
+        return Array.from({ length: start.dayCountOfMonth }).map((_, index) => {
+            const x = start.clone.add(index, 'day').format('yyyy-MM-dd')
+            return { x, y: 0 }
+        })
+    }
+    const { start, end } = generateStartAndEnd()
 
-    const { start, end, defaultItems } = generateStartAndDefaultItems()
+    const defaultItems = generateDefaultItems(start)
     const { data: items } = useSWR(`/api/v1/items/summary?happened_after=${start}&happened_before=${end}&kind=${kind}&group_by='happen_at'`,
         async (path) => {
             const response = await get<{ groups: { happen_at: string; amount: number }[]; total: number }>(path)
