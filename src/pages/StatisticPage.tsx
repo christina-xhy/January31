@@ -12,18 +12,35 @@ import { useAjax } from "../lib/ajax"
 import { Time, time } from "../lib/time"
 type Groups = { happen_at: string; amount: number }[]
 type Groups2 = { tag_id: string; tag: Tag; amount: number }[]
+
+type getKeyParams = {
+    start: Time
+    end: Time
+    kind: Item['kind']
+    group_by: 'happen_at' | 'tag_id'
+}
+const getKey = ({ start, end, kind, group_by }: getKeyParams) => {
+    return `/api/v1/items/summary?happened_after=${start.format('yyyy-MM-dd')}&happened_before=${end.format('yyyy-MM-dd')}&kind=${kind}&group_by=${group_by}`
+}
+const timeRangeMap: { [k in TimeRange]: number } = {
+    thisYear: 0,
+    custom: 0,
+    thisMonth: 0,
+    lastMonth: -1,
+    twoMonthsAgo: -2,
+    threeMonthsAgo: -3,
+}
+
 export const StatisticPage: React.FC = () => {
     const [timeRange, setTimeRange] = useState<TimeRange>('thisMonth')
     const { get } = useAjax({ showLoading: false, handleError: true })
-    const [kind, setKind] = useState('')
+    const [kind, setKind] = useState<Item['kind']>('expenses')
+
     const generateStartAndEnd = () => {
-        if (timeRange === 'thisMonth') {
-            const start = time().firstDayOfMonth
-            const end = time().lastDayOfMonth.add(1, 'day')
-            return { start, end }
-        } else {
-            return { start: time(), end: time() }
-        }
+        const selected: Time = time().add(timeRangeMap[timeRange], 'month')
+        const start = selected.firstDayOfMonth
+        const end = start.lastDayOfMonth.add(1, 'day')
+        return { start, end }
     }
     //生成一个变亮，创建空的数据
     const generateDefaultItems = (time: Time) => {
@@ -35,7 +52,7 @@ export const StatisticPage: React.FC = () => {
     const { start, end } = generateStartAndEnd()
 
     const defaultItems = generateDefaultItems(start)
-    const { data: items } = useSWR(`/api/v1/items/summary?happened_after=${start}&happened_before=${end}&kind=${kind}&group_by=happen_at`,
+    const { data: items } = useSWR(getKey({ start, end, kind, group_by: 'happen_at' }),
         async (path) => {
             const response = await get<{ groups: Groups; total: number }>(path)
             return response.data.groups
@@ -51,7 +68,7 @@ export const StatisticPage: React.FC = () => {
     })
     useEffect(() => { }, [items])
 
-    const { data: data2 } = useSWR(`/api/v1/items/summary?happened_after=${start}&happened_before=${end}&kind=${kind}&group_by=tag_id`,
+    const { data: data2 } = useSWR(getKey({ start, end, kind, group_by: 'tag_id' }),
         async (path) =>
             (await get<{ groups: Groups2; total: number }>(path)).data
     )
@@ -82,7 +99,7 @@ export const StatisticPage: React.FC = () => {
                     <Input type='select' options={[
                         { text: '支出', value: 'expenses' },
                         { text: '收入', value: 'income' }
-                    ]} value={kind} onChange={value => setKind(value)} />
+                    ]} value={kind} onChange={value => setKind(value)} disableError />
                 </div>
             </div>
             <LineChart className={'h-200px  m-b-24px'} items={normalizedItems} />
