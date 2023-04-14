@@ -10,8 +10,8 @@ import { TimeRange, TimeRangePicker } from "../components/TimeRangePicker"
 import { TopNav } from "../components/TopNav"
 import { useAjax } from "../lib/ajax"
 import { Time, time } from "../lib/time"
-
-
+type Groups = { happen_at: string; amount: number }[]
+type Groups2 = { tag_id: string; tag: Tag; amount: number }[]
 export const StatisticPage: React.FC = () => {
     const [timeRange, setTimeRange] = useState<TimeRange>('thisMonth')
     const { get } = useAjax({ showLoading: false, handleError: true })
@@ -35,11 +35,11 @@ export const StatisticPage: React.FC = () => {
     const { start, end } = generateStartAndEnd()
 
     const defaultItems = generateDefaultItems(start)
-    const { data: items } = useSWR(`/api/v1/items/summary?happened_after=${start}&happened_before=${end}&kind=${kind}&group_by='happen_at'`,
+    const { data: items } = useSWR(`/api/v1/items/summary?happened_after=${start}&happened_before=${end}&kind=${kind}&group_by=happen_at`,
         async (path) => {
-            const response = await get<{ groups: { happen_at: string; amount: number }[]; total: number }>(path)
+            const response = await get<{ groups: Groups; total: number }>(path)
             return response.data.groups
-                .map(({ happen_at, amount }) => ({ x: happen_at, y: amount }))
+                .map(({ happen_at, amount }) => ({ x: happen_at, y: (amount / 100).toFixed(2) }))
         })
     const normalizedItems = defaultItems?.map((defaultItem) => {
         const item = items?.find((item) => item.x === defaultItem.x)
@@ -49,19 +49,18 @@ export const StatisticPage: React.FC = () => {
             return defaultItem
         }
     })
-    console.log(normalizedItems)
-    useEffect(() => {
-        console.log(items)
+    useEffect(() => { }, [items])
 
-    }, [items])
+    const { data: data2 } = useSWR(`/api/v1/items/summary?happened_after=${start}&happened_before=${end}&kind=${kind}&group_by=tag_id`,
+        async (path) =>
+            (await get<{ groups: Groups2; total: number }>(path)).data
+    )
+    const { groups: groups2, total: total2 } = data2 ?? {}
+    const items2 = groups2?.map((item) => {
+        return { name: item.tag.name, value: (item.amount / 100).toFixed(2), sign: item.tag.sign }
+    })
+    console.log(items2)
 
-    const items2 = [
-        { tag: { name: '吃饭', sign: '😊' }, amount: 10000 },
-        { tag: { name: 'car', sign: 'xx' }, amount: 10800 },
-        { tag: { name: 'food', sign: 'xxxxxx' }, amount: 50000 },
-        { tag: { name: 'cloth', sign: 'ww' }, amount: 20000 },
-        { tag: { name: 'masks', sign: 'qq' }, amount: 11000 },
-    ].map(item => ({ x: item.tag.name, y: item.amount / 100 }))
     const item3 = [
         { tag: { name: '吃饭', sign: '😊' }, amount: 10000 },
         { tag: { name: 'car', sign: 'xx' }, amount: 10800 },

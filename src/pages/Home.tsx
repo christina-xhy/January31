@@ -10,7 +10,7 @@ interface Props {
   title?: string
 }
 export const Home: React.FC<Props> = (props) => {
-  const { get: getWithLoading } = useAjax({ showLoading: true, handleError: false })
+  const { get: getWithLoading } = useAjax({ showLoading: false, handleError: false })
   const { get } = useAjax({ showLoading: false })
   useTitle(props.title)
   const { data: meData, error: meError } = useSWR('/api/v1/me', async path =>
