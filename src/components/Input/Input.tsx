@@ -12,7 +12,7 @@ type Props = {
     disableError?: boolean
 
 } & (
-        | { type: 'text' }
+        | { type?: 'text' }
         | { type: 'emoji' }
         | { type: 'sms_code'; request?: () => Promise<unknown> }
         | { type: 'select', options: { value: string; text: string }[] }

@@ -31,6 +31,10 @@ export class Time {
       get dayCountOfMonth() {
             return this.lastDayOfMonth.day
       }
+      set(parts: Partial<Parts>) {
+            this.parts = parts
+            return this
+      }
       /**
        * 格式化输出
        * @param pattern 目前只支持 yyyy MM dd HH mm ss fff, 默认值为yyyy-MM-dd
@@ -83,6 +87,7 @@ export class Time {
                   year, month, day, hours, minutes, seconds, ms
             }
       }
+      //month = 1 
       set parts(p: Partial<Parts>) {
             const table = {
                   year: 'setFullYear',

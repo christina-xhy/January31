@@ -1,25 +1,29 @@
 import styled from 'styled-components'
 import useSWRInfinite from 'swr/infinite'
 import { useAjax } from '../../lib/ajax'
+import { Time } from '../../lib/time'
 
 const Div = styled.div`
   padding:16px;
   text-align: center;
 `
-// 一、 确定请求的次数  二、返回请求的网页页面
-const getKey = (pageIndex: number, prev: Resources<Item>) => {
-  if (prev) {
-    const sendCount = (prev.pager.page - 1) * prev.pager.per_page + prev.resources.length
-    const count = prev.pager.count
-    if (sendCount >= count) { return null }
-  }
-  return `/api/v1/items?page=${pageIndex + 1}`
-} // 返回当前请求的页码 + 如果没有前一页，一定发送第一页请求
 
-interface Props {
 
+type Props = {
+  start: Time
+  end: Time
 }
-export const ItemsList: React.FC<Props> = () => {
+export const ItemsList: React.FC<Props> = (props) => {
+  const { start, end } = props
+  // 一、 确定请求的次数  二、返回请求的网页页面
+  const getKey = (pageIndex: number, prev: Resources<Item>) => {
+    if (prev) {
+      const sendCount = (prev.pager.page - 1) * prev.pager.per_page + prev.resources.length
+      const count = prev.pager.count
+      if (sendCount >= count) { return null }
+    }
+    return `/api/v1/items?page=${pageIndex + 1}&happened_after=${start.format('yyyy-MM-dd')}&happened_before=${end.format('yyyy-MM-dd')}`
+  } // 返回当前请求的页码 + 如果没有前一页，一定发送第一页请求
   const { get } = useAjax({})
   const { data, error, size, setSize } = useSWRInfinite(
     getKey, async path => (await get<Resources<Item>>(path)).data,
@@ -32,6 +36,7 @@ export const ItemsList: React.FC<Props> = () => {
   const isLoadingInitialData = !data && !error
   const isLoadingMore = data?.[size - 1] === undefined && !error
   const isLoading = isLoadingInitialData || isLoadingMore
+
 
   if (!data) {
     return (

@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import { usePopup } from '../hooks/usePopup';
 import { Tabs } from './Tabs'
 export type TimeRange =
   | 'thisMonth'
@@ -21,8 +21,25 @@ type Props = {
 }
 
 export const TimeRangePicker: React.FC<Props> = (props) => {
-  const { selected, onSelect, timeRanges = defaultTimeRanges } = props
+  const { selected, onSelect: _onSelect, timeRanges = defaultTimeRanges } = props
+  const onConfirm = () => {
+    _onSelect('custom')
+  }
+  const { popup, hide, show } = usePopup(false,
+    <div onClick={onConfirm}>xxx</div>,
+    'center'
+  )
+  const onSelect = (key: TimeRange) => {
+    if (key === 'custom') {
+      show()
+    } else {
+      _onSelect(key)
+    }
+  }
   return (
-    <Tabs className='' tabItems={timeRanges} value={selected} classPrefix='items' onChange={onSelect} />
+    <>
+      {popup}
+      <Tabs className='' tabItems={timeRanges} value={selected} classPrefix='items' onChange={onSelect} />
+    </>
   )
 }

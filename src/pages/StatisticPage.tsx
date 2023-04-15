@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import useSWR from "swr"
+import { BackIcon } from "../components/BackIcon"
 import { Gradient } from "../components/Gradient"
-import { Icon } from "../components/Icon"
 import { Input } from "../components/Input/Input"
 import { LineChart } from "../components/LineChart"
 import { PieChart } from "../components/PieChart"
@@ -9,7 +9,8 @@ import { RankChart } from "../components/RankChart"
 import { TimeRange, TimeRangePicker } from "../components/TimeRangePicker"
 import { TopNav } from "../components/TopNav"
 import { useAjax } from "../lib/ajax"
-import { Time, time } from "../lib/time"
+import { Time } from "../lib/time"
+import { TimeRangeToStartAndEnd } from "../lib/TimeRangeToStartAndEnd"
 type Groups = { happen_at: string; amount: number }[]
 type Groups2 = { tag_id: string; tag: Tag; amount: number }[]
 
@@ -22,34 +23,21 @@ type getKeyParams = {
 const getKey = ({ start, end, kind, group_by }: getKeyParams) => {
     return `/api/v1/items/summary?happened_after=${start.format('yyyy-MM-dd')}&happened_before=${end.format('yyyy-MM-dd')}&kind=${kind}&group_by=${group_by}`
 }
-const timeRangeMap: { [k in TimeRange]: number } = {
-    thisYear: 0,
-    custom: 0,
-    thisMonth: 0,
-    lastMonth: -1,
-    twoMonthsAgo: -2,
-    threeMonthsAgo: -3,
-}
+
 
 export const StatisticPage: React.FC = () => {
     const [timeRange, setTimeRange] = useState<TimeRange>('thisMonth')
     const { get } = useAjax({ showLoading: false, handleError: true })
     const [kind, setKind] = useState<Item['kind']>('expenses')
 
-    const generateStartAndEnd = () => {
-        const selected: Time = time().add(timeRangeMap[timeRange], 'month')
-        const start = selected.firstDayOfMonth
-        const end = start.lastDayOfMonth.add(1, 'day')
-        return { start, end }
-    }
-    //生成一个变亮，创建空的数据
+
     const generateDefaultItems = (time: Time) => {
         return Array.from({ length: start.dayCountOfMonth }).map((_, index) => {
             const x = start.clone.add(index, 'day').format('yyyy-MM-dd')
             return { x, y: 0 }
         })
     }
-    const { start, end } = generateStartAndEnd()
+    const { start, end } = TimeRangeToStartAndEnd(timeRange)
 
     const defaultItems = generateDefaultItems(start)
     const { data: items } = useSWR(getKey({ start, end, kind, group_by: 'happen_at' }),
@@ -82,10 +70,11 @@ export const StatisticPage: React.FC = () => {
         <div>
             <Gradient>
                 <TopNav title='统计图表' icon={
-                    <Icon name='back' ></Icon>
+                    <BackIcon />
                 } />
             </Gradient>
             <TimeRangePicker selected={timeRange} onSelect={setTimeRange}
+                //自定义timeRanges属性的内容，设置默认值
                 timeRanges={[
                     { key: 'thisMonth', text: '本月' },
                     { key: 'lastMonth', text: '上月' },
