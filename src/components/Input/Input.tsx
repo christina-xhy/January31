@@ -1,6 +1,7 @@
 
-import { ReactNode, useState } from 'react'
+import { ReactNode } from 'react'
 import { SmsCodeInput } from '../SmsCodeInput'
+import { DateInput } from './DataInput'
 import { EmojiInput } from './emojiInput'
 
 type Props = {
@@ -10,17 +11,23 @@ type Props = {
     onChange?: (value: string) => void
     error?: string
     disableError?: boolean
+    className?: string
 
 } & (
         | { type?: 'text' }
         | { type: 'emoji' }
+        | { type: 'date' }
         | { type: 'sms_code'; request?: () => Promise<unknown> }
         | { type: 'select', options: { value: string; text: string }[] }
     )
 
 
 export const Input: React.FC<Props> = (props) => {
-    const { label, placeholder, value, onChange, type, error, disableError } = props
+    const { label, placeholder, value, onChange, type, error, disableError, className } = props
+
+    console.log("======" + value)
+
+
     const renderInput = () => {
         {
             switch (props.type) {
@@ -39,6 +46,8 @@ export const Input: React.FC<Props> = (props) => {
                             return <option key={option.value} value={option.value}>{option.text}</option>
                         })}
                     </select>
+                case 'date':
+                    return <DateInput value={value} onChange={onChange} placeholder={placeholder} type={type} />
                 default:
                     return null
             }
@@ -46,7 +55,7 @@ export const Input: React.FC<Props> = (props) => {
     }
     return (
         <>
-            <div flex flex-col gap-y-8px>
+            <div flex flex-col gap-y-8px className={className}>
                 {label ? <span j-form-label >{label}</span> : null}
                 {renderInput()}
             </div>

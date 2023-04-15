@@ -51,7 +51,7 @@ type ColumnProps = {
       visible?: boolean
       onChange: (value: number) => void
       onClose?: () => void
-      onComfirm?: (time: Date) => void
+      onConfirm?: (time: Date) => void
 }
 
 export const Column: React.FC<ColumnProps> = (props) => {

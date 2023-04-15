@@ -7,6 +7,7 @@ type Props = {
     onChange?: (value: string) => void
     onClick?: () => void
     request?: () => Promise<unknown>
+    className?: string
 } & (
         | { type: 'text' }
         | { type: 'emoji' }
@@ -15,7 +16,7 @@ type Props = {
     )
 const maxCount = 30
 export const SmsCodeInput: React.FC<Props> = (props) => {
-    const { value, placeholder, onChange, request, type } = props
+    const { value, placeholder, onChange, request, type, className } = props
     const [count, setCount] = useState(maxCount)
     const [start, setStart] = useState<Date>()
     const timer = useRef<number>()
@@ -50,7 +51,7 @@ export const SmsCodeInput: React.FC<Props> = (props) => {
     }, [start, count])
     return (
         <div>
-            <div flex gap-x-6px>
+            <div flex gap-x-6px className={className}>
                 <input shrink-1 max-w='[calc(40%-8px)]' j-input-text type={type} rounded-8px placeholder={placeholder}
                     value={value} onChange={e => onChange?.(e.target.value)} />
                 {start
