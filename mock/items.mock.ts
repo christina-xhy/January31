@@ -52,5 +52,18 @@ export const itemsMock: MockMethod[] = [{
     return createResponse({ count: 91, perPage: 10, page: parseInt(query.page) || 1 })
   }
   // query是Mock，response中的属性,设置path路径
-}]
+},
+{
+  url: '/api/v1/items/balance',
+  method: 'get',
+  statusCode: 200,
+  timeout: 100,
+  response: () => ({
+    balance: 100000,
+    expenses: 230000,
+    income: 330000
+  })
+  // query是Mock，response中的属性,设置path路径
+},
+]
 
