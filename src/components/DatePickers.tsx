@@ -8,11 +8,13 @@ type itemProps = {
       onCancel?: () => void
       onConfirm?: (value: Date) => void
 }
+
+const getNow = () => time().set({ hours: 0, minutes: 0, seconds: 0, ms: 0 })
 export const DatePickers: React.FC<itemProps> = (props) => {
       const { start, end, value, onCancel, onConfirm } = props
-      const startTime = start ? time(start) : time().add(-10, 'years')
-      const endTime = end ? time(end) : time().add(10, 'years')
-      const valueTime = useRef(value ? time(value) : time())
+      const startTime = start ? time(start) : getNow().add(-10, 'years')
+      const endTime = end ? time(end) : getNow().add(10, 'years')
+      const valueTime = useRef(value ? time(value) : getNow())
       if (endTime.timesStamp <= startTime.timesStamp) {
             throw new Error('结束时间不能小于开始时间')
       }

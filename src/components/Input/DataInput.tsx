@@ -13,7 +13,7 @@ type Props = {
 export const DateInput: React.FC<Props> = (props) => {
     const { value, onChange, className, placeholder, type } = props
     const { toggle, popup, hide } = usePopup({
-        children: < DatePickers onConfirm={d => { onChange?.(time(d).format()); hide() }}
+        children: < DatePickers onConfirm={d => { onChange?.(time(d).isoString); hide() }}
             onCancel={() => hide()} />, position: 'bottom'
     })
 
@@ -21,7 +21,7 @@ export const DateInput: React.FC<Props> = (props) => {
         <>
             {popup}
             <input className={className} j-input-text rounded-8px type={type} placeholder={placeholder}
-                readOnly={true} value={value} onClick={toggle} />
+                readOnly={true} value={time(value).format()} onClick={toggle} />
         </>
 
     )

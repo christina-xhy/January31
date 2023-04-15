@@ -132,6 +132,10 @@ export class Time {
             //                   break
             //       }
       }
+      removeTime() {
+            this.set({ hours: 0, minutes: 0, seconds: 0, ms: 0 })
+            return this
+      }
       get year() {
             return this.parts.year
       }

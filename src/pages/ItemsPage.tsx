@@ -9,7 +9,6 @@ import { TopMenu } from '../components/TopMenu'
 import { TopNav } from '../components/TopNav'
 import { useTitle } from '../hooks/useTitle'
 import { Time } from '../lib/time'
-import { TimeRangeToStartAndEnd } from '../lib/TimeRangeToStartAndEnd'
 import { useMenuStore } from '../stores/useMenuStore'
 import { ItemsList } from './ItemsPages/ItemsList'
 import { ItemsSummary } from './ItemsPages/ItemsSummary'
@@ -27,7 +26,7 @@ export const ItemsPage: React.FC<Props> = (props) => {
     start: time().firstDayOfMonth,
     end: time().lastDayOfMonth.add(1, 'day')
   })
-  const { start, end } = TimeRangeToStartAndEnd(timeRange)
+  const { start, end } = timeRange
   const { visible, setVisible } = useMenuStore()
   return (
     <div>
