@@ -32,6 +32,7 @@ export const useAjax = (options: Options) => {
   const showLoading = options?.showLoading || false
   const handleError = options?.handleError ?? true
   const { show, hide } = useContext(LoadingContext)
+  //const { setVisible } = useLoadingStore()
   const onError = (error: AxiosError) => {
     if (error.response) {
       if (handleError) {

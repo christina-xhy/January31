@@ -2,7 +2,7 @@
 import { TimeRange } from "../components/TimeRangePicker"
 import { Time, time } from "./time"
 
-const timeRangeMap: { [k in TimeRange]: number } = {
+const timeRangeMap: { [k in TimeRange['name']]: number } = {
     thisYear: 0,
     custom: 0,
     thisMonth: 0,
@@ -13,12 +13,12 @@ const timeRangeMap: { [k in TimeRange]: number } = {
 
 export const TimeRangeToStartAndEnd = (timeRange: TimeRange) => {
     let selected: Time, start: Time, end: Time
-    switch (timeRange) {
+    switch (timeRange.name) {
         case 'thisMonth':
         case 'lastMonth':
         case 'twoMonthsAgo':
         case 'threeMonthsAgo':
-            selected = time().add(timeRangeMap[timeRange], 'month')
+            selected = time().add(timeRangeMap[timeRange.name], 'month')
             start = selected.firstDayOfMonth
             end = start.lastDayOfMonth.add(1, 'day')
             return { start, end }
@@ -26,8 +26,8 @@ export const TimeRangeToStartAndEnd = (timeRange: TimeRange) => {
             start = time().set({ month: 1 }).firstDayOfMonth
             end = time().add(1, 'year').set({ month: 1 }).firstDayOfMonth
             return { start, end }
-        case 'custom': 
-        return{ start: time(), end: time()}
+        case 'custom':
+            return { start: time(), end: time() }
     }
 }
 //生成一个变量，创建空的数据

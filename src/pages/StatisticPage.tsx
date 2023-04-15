@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react"
 import useSWR from "swr"
 import { BackIcon } from "../components/BackIcon"
@@ -9,7 +10,7 @@ import { RankChart } from "../components/RankChart"
 import { TimeRange, TimeRangePicker } from "../components/TimeRangePicker"
 import { TopNav } from "../components/TopNav"
 import { useAjax } from "../lib/ajax"
-import { Time } from "../lib/time"
+import { Time, time } from "../lib/time"
 import { TimeRangeToStartAndEnd } from "../lib/TimeRangeToStartAndEnd"
 type Groups = { happen_at: string; amount: number }[]
 type Groups2 = { tag_id: string; tag: Tag; amount: number }[]
@@ -26,7 +27,11 @@ const getKey = ({ start, end, kind, group_by }: getKeyParams) => {
 
 
 export const StatisticPage: React.FC = () => {
-    const [timeRange, setTimeRange] = useState<TimeRange>('thisMonth')
+    const [timeRange, setTimeRange] = useState<TimeRange>({
+        name: 'thisMonth',
+        start: time().firstDayOfMonth,
+        end: time().lastDayOfMonth.add(1, 'day')
+    })
     const { get } = useAjax({ showLoading: false, handleError: true })
     const [kind, setKind] = useState<Item['kind']>('expenses')
 
@@ -76,10 +81,22 @@ export const StatisticPage: React.FC = () => {
             <TimeRangePicker selected={timeRange} onSelect={setTimeRange}
                 //自定义timeRanges属性的内容，设置默认值
                 timeRanges={[
-                    { key: 'thisMonth', text: '本月' },
-                    { key: 'lastMonth', text: '上月' },
-                    { key: 'twoMonthsAgo', text: '两个月内' },
-                    { key: 'threeMonthsAgo', text: '三个月内' },
+                    {
+                        text: '本月',
+                        key: { name: 'thisMonth', start: time().firstDayOfMonth, end: time().lastDayOfMonth.add(1, 'day') },
+                    },
+                    {
+                        text: '上月',
+                        key: { name: 'lastMonth', start: time().add(-1, 'month').firstDayOfMonth, end: time().add(-1, 'month').lastDayOfMonth.add(1, 'day') },
+                    },
+                    {
+                        text: '前两个月',
+                        key: { name: 'twoMonthsAgo', start: time().add(-2, 'month').firstDayOfMonth, end: time().add(-2, 'month').lastDayOfMonth.add(1, 'day') },
+                    },
+                    {
+                        text: '前三个月',
+                        key: { name: 'threeMonthsAgo', start: time().add(-3, 'month').firstDayOfMonth, end: time().add(-3, 'month').lastDayOfMonth.add(1, 'day') },
+                    },
 
                 ]} />
             <div flex px-16px grow-0 shrink-0 items-center gap-x-16px p-16px>

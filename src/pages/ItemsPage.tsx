@@ -1,3 +1,4 @@
+import { time } from '../lib/time'
 import { useState } from 'react'
 import { AddItemFloatButton } from '../components/AddItmeFloatButton'
 import { Gradient } from '../components/Gradient'
@@ -21,7 +22,11 @@ interface Props {
 
 export const ItemsPage: React.FC<Props> = (props) => {
   useTitle(props.title)
-  const [timeRange, setTimeRange] = useState<TimeRange>('thisMonth')
+  const [timeRange, setTimeRange] = useState<TimeRange>({
+    name: 'thisMonth',
+    start: time().firstDayOfMonth,
+    end: time().lastDayOfMonth.add(1, 'day')
+  })
   const { start, end } = TimeRangeToStartAndEnd(timeRange)
   const { visible, setVisible } = useMenuStore()
   return (
