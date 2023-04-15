@@ -12,12 +12,12 @@ import { Time } from '../lib/time'
 import { useMenuStore } from '../stores/useMenuStore'
 import { ItemsList } from './ItemsPages/ItemsList'
 import { ItemsSummary } from './ItemsPages/ItemsSummary'
+import { useNavigate } from 'react-router-dom'
 
 interface Props {
   title?: string
   start: Time
   end: Time
-  error: () => void
 }
 
 export const ItemsPage: React.FC<Props> = (props) => {
@@ -34,15 +34,17 @@ export const ItemsPage: React.FC<Props> = (props) => {
     }
     if (t.end.timesStamp - t.start.timesStamp > Time.DAY * 365) {
       setOutOfRange(true)
+      window.alert('日期不能超过一年，请重新选择')
+      useNavigate('/items')
+    } else {
+      setOutOfRange(false)
     }
     _setTimeRange(t)
   }
 
   const { start, end } = timeRange
   const { visible, setVisible } = useMenuStore()
-  const error = () => {
-    window.alert('xxxx')
-  }
+
   return (
     <div>
       <Gradient>
@@ -53,7 +55,7 @@ export const ItemsPage: React.FC<Props> = (props) => {
       <TimeRangePicker selected={timeRange} onSelect={setTimeRange} />
       {
         outOfRange
-          ? <div text-center p-32px>请重新选择日期,不能超过365天</div>
+          ? <div text-center p-32px></div>
           :
           <>
             <ItemsSummary />
