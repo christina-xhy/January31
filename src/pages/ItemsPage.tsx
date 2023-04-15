@@ -17,17 +17,32 @@ interface Props {
   title?: string
   start: Time
   end: Time
+  error: () => void
 }
 
 export const ItemsPage: React.FC<Props> = (props) => {
   useTitle(props.title)
-  const [timeRange, setTimeRange] = useState<TimeRange>({
+  const [timeRange, _setTimeRange] = useState<TimeRange>({
     name: 'thisMonth',
     start: time().firstDayOfMonth,
     end: time().lastDayOfMonth.add(1, 'day')
   })
+  const [outOfRange, setOutOfRange] = useState(false)
+  const setTimeRange = (t: TimeRange) => {
+    if (t.start.timesStamp > t.end.timesStamp) {
+      [t.start, t.end] = [t.end, t.start]
+    }
+    if (t.end.timesStamp - t.start.timesStamp > Time.DAY * 365) {
+      setOutOfRange(true)
+    }
+    _setTimeRange(t)
+  }
+
   const { start, end } = timeRange
   const { visible, setVisible } = useMenuStore()
+  const error = () => {
+    window.alert('xxxx')
+  }
   return (
     <div>
       <Gradient>
@@ -36,8 +51,15 @@ export const ItemsPage: React.FC<Props> = (props) => {
         } />
       </Gradient>
       <TimeRangePicker selected={timeRange} onSelect={setTimeRange} />
-      <ItemsSummary />
-      <ItemsList start={start} end={end} />
+      {
+        outOfRange
+          ? <div text-center p-32px>请重新选择日期,不能超过365天</div>
+          :
+          <>
+            <ItemsSummary />
+            <ItemsList start={start} end={end} />
+          </>
+      }
       <AddItemFloatButton />
       <TopMenu visible={visible} onClickMask={() => { setVisible(false) }} />
     </div>
