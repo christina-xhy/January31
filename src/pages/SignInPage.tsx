@@ -67,6 +67,7 @@ export const SignInPage: React.FC = () => {
         <Icon name='logo' className='w-64px h-68px'></Icon>
         <h1 text-28px text='#fda4af' font-bold>ali记账</h1>
       </div>
+
       <form j-form onSubmit={onSubmit}>
         <Input label='邮箱地址' type='text' placeholder='请输入邮箱，然后点击发送验证码' value={data.email}
           onChange={email => setData({ email })} error={error.email?.[0]} />

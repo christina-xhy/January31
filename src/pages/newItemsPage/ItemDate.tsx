@@ -9,7 +9,7 @@ type Props = {
 export const ItemDate: React.FC<Props> = (props) => {
     const { value, onChange } = props
     const { toggle, popup, hide } = usePopup({
-        children: < DatePickers onConfirm={d => { onChange(time(d).isoString); hide() }}
+        children: < DatePickers onConfirm={d => { onChange(time(d).isoString);hide() }}
             onCancel={() => hide()} />,
         position: 'bottom'
     })

@@ -16,8 +16,8 @@ import { useNavigate } from 'react-router-dom'
 
 interface Props {
   title?: string
-  start: Time
-  end: Time
+  start?: Time
+  end?: Time
 }
 
 export const ItemsPage: React.FC<Props> = (props) => {

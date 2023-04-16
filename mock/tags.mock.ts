@@ -47,7 +47,7 @@ export const tagsMock: MockMethod[] = [{
     timeout: 1000,
     // query是Mock，response中的属性,设置path路径
     response: ({ query }: ResponseParams): Resources<Tag> => {
-        return createResponse({ count: 3, perPage: 50, page: parseInt(query.page) || 1 })
+        return createResponse({ count: 30, perPage: 50, page: parseInt(query.page) || 1 })
     }
 }, {
     url: '/api/v1/tags',

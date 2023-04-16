@@ -13,11 +13,10 @@ import { NewItemsPage } from '../pages/newItemsPage/NewItemsPage'
 import { TagsNewPage } from '../pages/TagsNewPage'
 import { TagsEditPage } from '../pages/TagsEditPage'
 import { StatisticPage } from '../pages/StatisticPage'
-import axios, { AxiosError } from 'axios'
 import { ItemsErrorPage } from '../pages/ItemsPageError'
-import { preload } from 'swr'
 import { ErrorEmptyData, ErrorUnAuthorized } from '../errors'
 import { ErrorPage } from '../pages/ErrorPage'
+import { ajax } from '../lib/ajax'
 
 export const router = createBrowserRouter([
   { path: '/', element: <Root /> },
@@ -39,10 +38,17 @@ export const router = createBrowserRouter([
     path: '/',
     element: <Outlet />,
     errorElement: <ErrorPage />,
-    loader: async () =>
-      preload('/api/v1/me', (path) => axios.get<Resource<User>>(path)
-        .then(response => response.data, e => { throw new ErrorUnAuthorized() })
-      ),
+    // loader: async () =>
+    //   preload('/api/v1/me', (path) => axios.get<Resource<User>>(path)
+    //     .then(response => response.data, e => { throw new ErrorUnAuthorized() })
+    //   ),
+    loader: async () => {
+      return await ajax.get<Resource<User>>('/api/v1/me').catch(e => {
+        if (e.response?.status === 401) {
+          throw new ErrorUnAuthorized
+        }
+      })
+    },
     children: [
       {
         path: '/items',
@@ -57,14 +63,12 @@ export const router = createBrowserRouter([
               throw error
             }
           }
-          return preload('/api/v1/items?page=1', async (path) => {
-            const response = await axios.get<Resources<Item>>(path).catch(onError)
-            if (response.data.resources.length > 0) {
-              return response.data
-            } else {
-              throw new ErrorEmptyData()
-            }
-          })
+          const response = await ajax.get<Resources<Item>>('/api/v1/items?page=1').catch(onError)
+          if (response.data.resources.length > 0) {
+            return response.data
+          } else {
+            throw new ErrorEmptyData()
+          }
         }
       },
       { path: '/items/new', element: <NewItemsPage /> },

@@ -18,7 +18,7 @@ export const useSignInStore = create<SignIn>((set, get) => (
     data: {
       //TODO: delete this email
       email: '1030083255@qq.com',
-      code: ''
+      code: '123456'
     },
     error: {
       email: [],

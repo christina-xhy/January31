@@ -15,7 +15,7 @@ export const EmojiInput: React.FC<Props> = (props) => {
     return (
         <div>
             <div flex flex-col gap-y-8px >
-                <div className={c(s.wrapper, className)} b-1 b='#f8b9c0' rounded-8px>
+                <div className={c(s.wrapper, className)} b-1 b-solid b='#f8b9c0' rounded-8px>
                     <div flex p-8px gap-x-16px overflow-auto text='#999'>
                         {
                             emojis.map((emoji) => {

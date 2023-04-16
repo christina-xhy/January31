@@ -16,7 +16,7 @@ type Props<T> = {
 }
 //比较对象key和value对象的属性是否相等
 const compareKey = <T extends (string | { name: string })>(a: T, c: T) => {
-  if (typeof a === 'string' && c === 'string') {
+  if (typeof a === 'string' && typeof c === 'string') {
     return a === c
   } else if (a instanceof Object && c instanceof Object) {
     return a.name === c.name
@@ -45,6 +45,9 @@ export const Tabs = <T extends string | { name: string }>(props: Props<T>) => {
       </ol>
       <div grow-1 shrink-1 overflow-auto className={classPrefix ? `${classPrefix}-pane` : ''}>
         {tabItems.filter(item => compareKey(item.key, value))[0]?.element}
+        {/*  */}
+        {/* {tabItems[0].element} */}
+
       </div>
     </div>
   )

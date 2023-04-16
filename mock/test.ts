@@ -7,11 +7,11 @@ import { sessionMock } from './session.mock'
 import { summaryMock } from './summary.mock'
 import { tagsMock } from './tags.mock'
 export default [
-  ...meMock,
-  ...itemsMock,
-  ...sessionMock,
-  ...tagsMock,
-  ...summaryMock,
+  // ...meMock,
+  // ...itemsMock,
+  // ...sessionMock,
+  // ...tagsMock,
+  // ...summaryMock,
 ] as MockMethod[]
 
 //     url: '/api/text',

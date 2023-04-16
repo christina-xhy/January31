@@ -24,10 +24,6 @@ type Props = {
 
 export const Input: React.FC<Props> = (props) => {
     const { label, placeholder, value, onChange, type, error, disableError, className } = props
-
-    console.log("======" + value)
-
-
     const renderInput = () => {
         {
             switch (props.type) {

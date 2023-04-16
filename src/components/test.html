@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <button id="btn">ttt</button>
+    <script>
+        const btn = document.getElementById("btn")
+        function foo(x, y){
+            console.log(x)
+            console.log("y: " + y)
+            return undefined
+        }
+        
+        //btn.addEventListener('click', foo('zzzz'))
+
+        btn.addEventListener('click', foo)
+
+        const tableItems = [
+            {
+                name: "支出",
+                text: "expense",
+                tags: ['1', '2']
+            },{
+                name: "收入",
+                text: "income",
+                tags: ['3', '4']
+
+            }
+        ]
+
+        const type = "支出"
+
+        function compare(v1, v2){
+            // if(v1 === v2){
+            //     return true
+            // }else{
+            //     return false
+            // }
+            return v1 === v2
+        }
+
+        const ret = tableItems.filter(item => compare(type, item.name))
+        const tt = ret[0]
+
+        function product1() {
+            return {
+                name: "tt",
+                age: 18
+            }
+        }
+
+        function product1() {
+            return {
+                name,age
+            }
+        }
+
+        const a = tt ? tt : "default"
+
+        const arrow1 = (param) => {
+            //.....
+            return "aa"
+        }
+
+      
+        const arrow2 = () => {
+            //.....
+            return "aa"
+        }  
+
+        const arrow3 = param => {
+            //.....
+            return "aa"
+        }  
+        
+        const arrow4 = _ => {
+            //.....
+            console.log(_)
+            return _ + "aa"
+        }  
+
+        // const arrow5 = _ => console.log(_);return "a"    
+        
+        const arrow6 = _ => {
+            return {
+                name: pp
+            }
+        }   
+
+        const arrow7 = _ => ({name: pp})
+
+
+
+        //const [output, _setOutput] = useState(() => value ? (value / 100).toString() : '0')
+console.log("===========")
+        function bar(x = "10", y){
+        
+
+        }
+        bar()
+        bar(11)
+        bar(11)
+
+
+        console.log("========================")
+        function foo(x){
+            return new Promise((resolve, reject) => {
+                console.log("立即执行 promise")
+                setTimeout(() => {
+                    if(x == 'hello'){
+                        resolve("nihao" + x)
+                    }else{
+                        reject('sth error')
+                    }
+                }, 3000);
+            })
+        }
+
+
+        const test1 = () => {
+            console.log("foo前执行的代码")
+
+
+            // 1
+            foo('hello').then(res => {
+                console.log("succeed: " + res)
+            }).catch(err => {
+                console.log("failed: " + err)
+            })
+
+            // 2
+            foo('hello').then(res => {
+                console.log("succeed: " + res)
+            }, err => {
+                console.log("failed: " + err)
+            })   
+
+
+            // try {
+            //     const ret = await foo('hello')
+            //     console.log(ret)
+
+            // } catch (error) {
+            //     console.log("failed: " + error)
+
+            // }
+            // console.log("foo后执行的代码")
+        }
+        
+        test1()
+
+
+    </script>
+</body>
+</html>

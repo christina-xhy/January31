@@ -8,7 +8,7 @@ export const ErrorPage: React.FC = () => {
     const err = error as Error
     if (err instanceof ErrorUnAuthorized) {
         const from = encodeURIComponent(`${location.pathname}${location.search}`)
-        return <Navigate to={`/sign_in?from=${from}`} />
+        return <Navigate replace to={`/sign_in?from=${from}`} />
     } else {
         return (
             <div>未知错误</div>

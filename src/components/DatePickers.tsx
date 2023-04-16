@@ -28,7 +28,7 @@ export const DatePickers: React.FC<itemProps> = (props) => {
       const [_, update] = useState({})
       return (
             <div>
-                  <div flex justify-between p-16px border-b-1 b='#f3f3f3' overflow-hidden
+                  <div flex justify-between p-16px border-b-1 b-t-solid b-b-solid b='#f3f3f3' overflow-hidden
                         children-p-8px>
                         <span onClick={onCancel}>取消</span>
                         <span>时间选择</span>
@@ -73,6 +73,8 @@ export const Column: React.FC<ColumnProps> = (props) => {
             y = Math.max(y, (items.length - 1) * -itemHeight)
             _setTranslateY(y)
       }
+
+      
       return (
 
             <div className={className} h='50vh' overflow-hidden relative
@@ -100,7 +102,7 @@ export const Column: React.FC<ColumnProps> = (props) => {
                         onChange(items[Math.abs(y / itemHeight)])
 
                   }} >
-                  <div border-b-1 border-t-1 b="#eee" absolute top="50%" w-full
+                  <div border-b-1 border-t-1 b-b-solid b-t-solid b="#eee" absolute top="50%" w-full
                         style={{ height: itemHeight, transform: `translateY(${-itemHeight / 2}px)` }} />
                   <div absolute top="50%" w-full style={{ transform: `translateY(${-itemHeight / 2}px)` }}>
                         <ol style={{ transform: `translateY(${translateY}px)` }} text-center children-flex children-items-center children-justify-center>
