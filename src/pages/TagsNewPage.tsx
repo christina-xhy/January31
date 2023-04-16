@@ -1,5 +1,4 @@
 import { Gradient } from "../components/Gradient"
-import { Icon } from "../components/Icon"
 import { TopNav } from "../components/TopNav"
 import { TagForm } from "../components/TagsNewPage/TagForm"
 import { BackIcon } from "../components/BackIcon"

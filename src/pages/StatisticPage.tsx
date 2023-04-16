@@ -11,7 +11,7 @@ import { TimeRange, TimeRangePicker } from "../components/TimeRangePicker"
 import { TopNav } from "../components/TopNav"
 import { useAjax } from "../lib/ajax"
 import { Time, time } from "../lib/time"
-import { TimeRangeToStartAndEnd } from "../lib/TimeRangeToStartAndEnd"
+
 type Groups = { happen_at: string; amount: number }[]
 type Groups2 = { tag_id: string; tag: Tag; amount: number }[]
 
@@ -69,7 +69,6 @@ export const StatisticPage: React.FC = () => {
     const items2 = groups2?.map((item) => {
         return { name: item.tag.name, value: (item.amount / 100).toFixed(2), sign: item.tag.sign }
     })
-    console.log(items2)
 
     return (
         <div>

@@ -59,7 +59,5 @@ export const useSignInStore = create<SignIn>((set, get) => (
 // const v = prop(o, 'p1')
 // const v2 = prop2(o, 'p1') // is number | string, no extra info is captured
 
-// console.log('v', v)
 
-// console.log('v2', v2)
 

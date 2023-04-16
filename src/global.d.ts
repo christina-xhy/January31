@@ -1,8 +1,8 @@
 var isDev: boolean
-interface Resource<T> {
+type Resource<T> = {
     resource: T
 }
-interface Resources<T> {
+type Resources<T> = {
     resources: T[]
     pager: {
         page: number
@@ -11,7 +11,7 @@ interface Resources<T> {
     }
 }
 
-interface User {
+type User = {
     id: number
     email: string
     name?: string
@@ -19,19 +19,20 @@ interface User {
     updated_at: string
 }
 
-interface Item {
+type Item = {
     id: number
     user_id: number
     amount: number
     note?: string
     tag_ids: number[]
+    tags?: Tag[]
     happen_at: string
     created_at: string
     updated_at: string
     kind: 'expenses' | 'income'
 }
 
-interface Tag {
+type Tag = {
     id: number
     kind: Item['kind']
     user_id: number

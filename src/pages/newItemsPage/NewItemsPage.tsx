@@ -11,6 +11,7 @@ import { ItemDate } from './ItemDate'
 import { hasError, validate } from '../../lib/validate'
 import { useAjax } from '../../lib/ajax'
 import { BackIcon } from '../../components/BackIcon'
+import { useNavigate } from 'react-router-dom'
 
 export const NewItemsPage: React.FC = () => {
 
@@ -26,6 +27,7 @@ export const NewItemsPage: React.FC = () => {
   ]
 
   const { post } = useAjax({ showLoading: true, handleError: true })
+  const nav = useNavigate()
   const onSubmit = async () => {
     const error = validate(data, [
       { key: 'kind', type: 'required', message: '请选择类型：收入或支出' },
@@ -39,7 +41,8 @@ export const NewItemsPage: React.FC = () => {
       const message = Object.values(error).flat().join('\n')
       window.alert(message)
     } else {
-      const response = await post<Resource<Item>>('/api/v1/items', data)
+      await post<Resource<Item>>('/api/v1/items', data)
+      nav('/items')
     }
   }
 

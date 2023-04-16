@@ -32,7 +32,7 @@ export const TagForm: React.FC<Props> = (props) => {
     //查看标签页， 获取地址栏的id，进入编辑页面，重写地址栏
     const params = useParams()
     const id = params.id
-    const { data: tag } = useSWR(`/api/v1/tags/${id}`, async (path) =>
+    const { data: tag } = useSWR(id ? `/api/v1/tags/${id}` : null, async (path) =>
         (await get<Resource<Tag>>(path)).data.resource
     )
     useEffect(() => {
@@ -73,6 +73,7 @@ export const TagForm: React.FC<Props> = (props) => {
                 : patch<Resource<Tag>>(`/api/v1/tags/${id}`, data)
             const response = await promise.catch(onSubmitError)
             setData(response.data.resource)
+            setData({ name: "", sign: "" })
             nav(`/items/new?kind=${encodeURIComponent(kind)}`)
         }
     }

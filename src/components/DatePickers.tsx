@@ -25,6 +25,9 @@ export const DatePickers: React.FC<itemProps> = (props) => {
       const dayList = Array.from({ length: valueTime.current.lastDayOfMonth.day }).map(
             (_, index) => index + 1
       )
+      const hourList = Array.from({ length: 24 }).map((_, index) => index)
+      const minuteList = Array.from({ length: 60 }).map((_, index) => index)
+
       const [_, update] = useState({})
       return (
             <div>
@@ -34,6 +37,13 @@ export const DatePickers: React.FC<itemProps> = (props) => {
                         <span>时间选择</span>
                         <span onClick={() => onConfirm?.(valueTime.current.date)}>确定</span>
                   </div>
+                  <div flex children-grow-1 text-center children-p-16px>
+                        <span>年</span>
+                        <span>月</span>
+                        <span>日</span>
+                        <span>时</span>
+                        <span>分</span>
+                  </div>
                   <div flex>
                         <Column className='grow-1' items={yearList} value={valueTime.current.year}
                               onChange={year => { valueTime.current.year = year; update({}) }} />
@@ -41,6 +51,10 @@ export const DatePickers: React.FC<itemProps> = (props) => {
                               onChange={month => { valueTime.current.month = month; update({}) }} />
                         <Column className='grow-1' items={dayList} value={valueTime.current.day}
                               onChange={day => { valueTime.current.day = day; update({}) }} />
+                        <Column className='grow-1' items={hourList} value={valueTime.current.hours}
+                              onChange={hours => { valueTime.current.hours = hours; update({}) }} />
+                        <Column className='grow-1' items={minuteList} value={valueTime.current.minutes}
+                              onChange={minute => { valueTime.current.minutes = minute; update({}) }} />
                   </div>
             </div>
       )
@@ -74,7 +88,7 @@ export const Column: React.FC<ColumnProps> = (props) => {
             _setTranslateY(y)
       }
 
-      
+
       return (
 
             <div className={className} h='50vh' overflow-hidden relative

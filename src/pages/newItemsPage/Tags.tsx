@@ -31,7 +31,7 @@ export const Tags: React.FC<Props> = (props) => {
   const { get } = useAjax({ showLoading: true, handleError: true })
   const { data, error, size, setSize } = useSWRInfinite(
     getKey, async path => (await get<Resources<Tag>>(path)).data,
-    { revalidateFirstPage: false }
+    { revalidateFirstPage: true }
   )
   const onLoadMore = () => {
     setSize(size + 1)

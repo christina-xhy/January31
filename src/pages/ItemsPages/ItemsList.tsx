@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import useSWRInfinite from 'swr/infinite'
 import { useAjax } from '../../lib/ajax'
-import { Time } from '../../lib/time'
+import { time, Time } from '../../lib/time'
 
 const Div = styled.div`
   padding:16px;
@@ -28,7 +28,7 @@ export const ItemsList: React.FC<Props> = (props) => {
   const { get } = useAjax({})
   const { data, error, size, setSize } = useSWRInfinite(
     getKey, async path => (await get<Resources<Item>>(path)).data,
-    { revalidateFirstPage: false }
+    { revalidateAll: true }
   )
   const onLoadMore = () => {
     setSize(size + 1)
@@ -61,13 +61,13 @@ export const ItemsList: React.FC<Props> = (props) => {
                   <li key={item.id} grid grid-cols='[auto_1fr_auto]' grid-rows-2 px-16px py-8px gap-x-12px >
                     <div row-start-1 col-start-1 row-end-3 col-end-2 text-24px
                       w-48px h-48px bg='#EFEFEF' rounded-50px flex justify-center items-center b-1 b-solid border-b='#EEE'>
-                      😘
+                      ''
                     </div>
                     <div row-start-1 col-start-2 row-end-2 col-end-3 text='#000000'>
-                      {item.note}
+                      {item.tags?.[0].name}
                     </div>
                     <div row-start-2 col-start-2 row-end-3 col-end-4 text='#999999'>
-                      {item.created_at}
+                      {time(item.happen_at).format('yyyy-MM-dd HH:mm')}
                     </div>
                     <div row-start-1 col-start-3 row-end-2 col-end-4 text='#53A867'>
                       ¥{item.amount / 100}
