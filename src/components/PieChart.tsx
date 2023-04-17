@@ -57,7 +57,7 @@ export const PieChart: React.FC<Props> = (props) => {
     }, [])
     useEffect(() => {
         const option: echarts.EChartsOption = {
-            series: [{ data: items, }]
+            series: [{ data: items }]
         };
         myChart.current?.setOption(option);
     }, [items])

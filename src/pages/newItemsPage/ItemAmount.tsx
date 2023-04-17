@@ -1,8 +1,5 @@
-import { FormEventHandler, ReactNode, useState } from 'react'
-import { DatePicker } from 'antd-mobile'
-import dayjs from 'dayjs'
-import { Icon } from '../../components/Icon'
-import { time } from '../../lib/time'
+import { ReactNode, useState } from 'react'
+
 
 interface Props {
   className: string
@@ -10,7 +7,7 @@ interface Props {
   value?: number
   onChange?: (amount: number) => void
   dateValue?: Date | string
-  dateChange: (date: string) => void
+  dateChange?: (date: string) => void
   onSubmit?: () => void
 }
 export const ItemAmount: React.FC<Props> = (props) => {
@@ -43,29 +40,13 @@ export const ItemAmount: React.FC<Props> = (props) => {
 
   }
   const clear = () => { setOutput('0') }
-  // const [createdAt, setCreatedAt] = useState<any>(new Date())
-  // const [visible, setVisible] = useState<boolean>(false)
-  // const chooseChange = (date: string) => {
-  //   dateChange(time(date).isoString)
-  // }
+
 
   return (
     <>
       <div className={className}>
         <div flex p-t-15px p-b-16px px-16px border-t-1px border-t='#ddd' >
           {itemDate}
-          {/* <span flex gap-x-8px items-center >
-            <Icon className='shrink-0 grow-0 w-24px h-24px' name='date' />
-            <span grow-0 shrink-0 text-12px >
-              <DatePicker visible={visible}
-                onClose={() => { setVisible(false) }}
-                onConfirm={(newDate) => { chooseChange(newDate.toString()) }}
-              />
-              <div onClick={() => { setVisible(true) }}>
-                <div>{dayjs(dateValue).format('YYYY-MM-DD')}</div>
-              </div>
-            </span>
-          </span> */}
           <code grow-1 items-center shrink-1 text-right text-20px color='pink' >{output}</code>
         </div>
         <div py-1px grid grid-cols='[repeat(4,1fr)]' grid-rows='[repeat(4,48px)]'
@@ -89,3 +70,6 @@ export const ItemAmount: React.FC<Props> = (props) => {
     </>
   )
 }
+
+
+

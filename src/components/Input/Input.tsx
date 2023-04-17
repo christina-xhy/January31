@@ -16,7 +16,7 @@ type Props<T> = {
 } & (
         | { type?: 'text' }
         | { type: 'emoji' }
-        | { type: 'date' }
+        | { type: 'myDate' }
         | { type: 'sms_code'; request?: () => Promise<unknown> }
         | { type: 'select', options: { value: string; text: string }[] }
     )
@@ -42,7 +42,7 @@ export const Input = <T extends string>(props: Props<T>) => {
                             return <option key={option.value} value={option.value}>{option.text}</option>
                         })}
                     </select>
-                case 'date':
+                case 'myDate':
                     return <DateInput value={value} onChange={value => onChange?.(value as T)} placeholder={placeholder} type={type} />
                 default:
                     return null
