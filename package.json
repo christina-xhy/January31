@@ -7,7 +7,7 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "dev": "vite",
-    "build": "tsc && vite build --base=/January31/",
+    "build": "tsc && vite build",
     "preview": "vite preview"
   },
   "dependencies": {

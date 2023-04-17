@@ -7,6 +7,7 @@ import { svgsprites } from './vite_plugins/svgsprites'
 // https://vitejs.dev/config/
 
 export default defineConfig(({ command }) => ({
+  base: '/',
   server: {
     proxy: {
       '/api/': {

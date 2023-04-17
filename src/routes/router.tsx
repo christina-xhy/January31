@@ -1,4 +1,4 @@
-import { createBrowserRouter, Navigate, Outlet } from 'react-router-dom'
+import { createBrowserRouter, createHashRouter, Navigate, Outlet } from 'react-router-dom'
 import { NotFoundPage } from '../pages/NotFoundPage'
 import { Root } from '../components/Root'
 import { Welcome1 } from '../pages/Welcome1'
@@ -20,9 +20,9 @@ import { ajax } from '../lib/ajax'
 import { ComingSoonPage } from '../pages/ComingSoonPage'
 import { AxiosError } from 'axios'
 
-export const router = createBrowserRouter([
+export const router = createHashRouter([
   { path: '/', element: <Root /> },
-  { path: '/home', element: <Home title='首页' /> },
+  { path: '/home', element: <Home title='钱包记账' /> },
   {
     path: '/welcome',
     element: <WelcomeLayout />,
@@ -54,7 +54,7 @@ export const router = createBrowserRouter([
     children: [
       {
         path: '/items',
-        element: <ItemsPage title='记账页面' />,
+        element: <ItemsPage title='记账' />,
         errorElement: <ItemsErrorPage />,
         loader: async () => {
           const onError = (error: AxiosError) => {
