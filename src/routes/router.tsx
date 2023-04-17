@@ -18,6 +18,7 @@ import { ErrorEmptyData, ErrorUnAuthorized } from '../errors'
 import { ErrorPage } from '../pages/ErrorPage'
 import { ajax } from '../lib/ajax'
 import { ComingSoonPage } from '../pages/ComingSoonPage'
+import { AxiosError } from 'axios'
 
 export const router = createBrowserRouter([
   { path: '/', element: <Root /> },
