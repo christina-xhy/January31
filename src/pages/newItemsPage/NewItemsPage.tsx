@@ -1,6 +1,5 @@
-import type { ReactNode, FormEventHandler } from 'react'
+import type { ReactNode } from 'react'
 import { Gradient } from '../../components/Gradient'
-import { Icon } from '../../components/Icon'
 import { Tabs } from '../../components/Tabs'
 import { TopNav } from '../../components/TopNav'
 import s from './NewItemsPage.module.scss'
@@ -12,6 +11,7 @@ import { hasError, validate } from '../../lib/validate'
 import { useAjax } from '../../lib/ajax'
 import { BackIcon } from '../../components/BackIcon'
 import { useNavigate } from 'react-router-dom'
+import { time } from '../../lib/time'
 
 export const NewItemsPage: React.FC = () => {
 
@@ -42,6 +42,7 @@ export const NewItemsPage: React.FC = () => {
       window.alert(message)
     } else {
       await post<Resource<Item>>('/api/v1/items', data)
+      setData({ happen_at: time().isoString, amount: 0, tag_ids: [] })
       nav('/items')
     }
   }
