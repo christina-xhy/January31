@@ -1,7 +1,7 @@
 import { EChartsOption } from "echarts"
 import * as echarts from 'echarts'
 import { useEffect, useRef } from "react"
-import { ItemKeys } from "@react-spring/web"
+
 
 type Props = {
     className?: string
@@ -62,6 +62,8 @@ export const PieChart: React.FC<Props> = (props) => {
         myChart.current?.setOption(option);
     }, [items])
     return (
-        <div className={className} ref={div} >PieChart </div>
+        <div className={className} ref={div}> </div>
+
+
     )
 }

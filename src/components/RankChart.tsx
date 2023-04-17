@@ -39,9 +39,9 @@ export const RankChart: React.FC<Props> = (props) => {
     return (
         <div ref={div} className={className}>
             {
-                items
+                items?.[0]
                     ? renderItems()
-                    : <div>暂无数据</div>
+                    : <div text-center color="[var(--color-pink)]">暂无数据</div>
             }
 
         </div>
