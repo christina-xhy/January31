@@ -26,7 +26,7 @@ const getKey = ({ start, end, kind, group_by }: getKeyParams) => {
 }
 
 
-export const StatisticPage: React.FC = () => {
+const StatisticPage: React.FC = () => {
     const [timeRange, setTimeRange] = useState<TimeRange>({
         name: 'thisMonth',
         start: time().firstDayOfMonth,
@@ -89,11 +89,11 @@ export const StatisticPage: React.FC = () => {
                         key: { name: 'lastMonth', start: time().add(-1, 'month').firstDayOfMonth, end: time().add(-1, 'month').lastDayOfMonth.add(1, 'day') },
                     },
                     {
-                        text: '前两个月',
+                        text: '两个月前',
                         key: { name: 'twoMonthsAgo', start: time().add(-2, 'month').firstDayOfMonth, end: time().add(-2, 'month').lastDayOfMonth.add(1, 'day') },
                     },
                     {
-                        text: '前三个月',
+                        text: '三个月前',
                         key: { name: 'threeMonthsAgo', start: time().add(-3, 'month').firstDayOfMonth, end: time().add(-3, 'month').lastDayOfMonth.add(1, 'day') },
                     },
 
@@ -113,4 +113,5 @@ export const StatisticPage: React.FC = () => {
         </div>
     )
 }
+export default StatisticPage
 

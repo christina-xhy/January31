@@ -12,13 +12,19 @@ import { SignInPage } from '../pages/SignInPage'
 import { NewItemsPage } from '../pages/newItemsPage/NewItemsPage'
 import { TagsNewPage } from '../pages/TagsNewPage'
 import { TagsEditPage } from '../pages/TagsEditPage'
-import { StatisticPage } from '../pages/StatisticPage'
 import { ItemsErrorPage } from '../pages/ItemsPageError'
 import { ErrorEmptyData, ErrorUnAuthorized } from '../errors'
 import { ErrorPage } from '../pages/ErrorPage'
 import { ajax } from '../lib/ajax'
 import { ComingSoonPage } from '../pages/ComingSoonPage'
 import { AxiosError } from 'axios'
+import loadable from '@loadable/component'
+import { lazy, Suspense } from 'react'
+import { Loading } from '../components/Loading'
+
+// const StatisticPage = lazy(() => import('../pages/StatisticPage'))
+const StatisticPage = loadable(() => import('../pages/StatisticPage'),
+  { fallback: <Loading className='h-screen' /> })
 
 export const router = createHashRouter([
   { path: '/', element: <Root /> },
@@ -84,3 +90,4 @@ export const router = createHashRouter([
     ]
   },
 ])
+

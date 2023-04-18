@@ -27,21 +27,23 @@ export const PieChart: React.FC<Props> = (props) => {
                 }
             },
             grid: {
-                top: 0,
+                top: 50,
                 left: 0,
-                bottom: 10,
+                bottom: 0,
                 right: 0,
             },
             legend: {
-                orient: 'vertical',
+                orient: 'horizontal',
                 left: 'left',
-
+                itemWidth: 20,
+                itemHeight: 10
             },
             series: [
                 {
                     name: 'Access From',
                     type: 'pie',
-                    radius: '80%',
+                    center: ['50%', '55%'],
+                    radius: '70%',
                     data: items.map((item, index) => ({ ...item, value: parseFloat(item.value.toString()) })),
                     emphasis: {
                         itemStyle: {

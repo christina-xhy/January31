@@ -28,9 +28,9 @@ const compareKey = <T extends (string | { name: string })>(a: T, c: T) => {
 export const Tabs = <T extends string | { name: string }>(props: Props<T>) => {
   const { tabItems, value, onChange, className, classPrefix } = props
   return (
-    <div className={c(className, classPrefix)} flex flex-col>
+    <div className={c(className, classPrefix)} flex flex-col flex-nowrap>
       {/* 设置ol的classPrefix，有可能是不同组件的ol */}
-      <ol flex text-black children-px-24px children-py-12px bg="[rgb(255,230,228)]"
+      <ol flex whitespace-nowrap text-black children-px-20px children-py-12px bg="[rgb(255,230,228)]"
         grow-0 shrink-0 className={classPrefix ? `${classPrefix}-menu` : ''}>
         {tabItems.map(item =>
           <li key={typeof item.key === 'string' ? item.key : item.key.name} className={

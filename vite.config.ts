@@ -8,6 +8,20 @@ import { svgsprites } from './vite_plugins/svgsprites'
 
 export default defineConfig(({ command }) => ({
   base: '/',
+  //手动配置codeSplit 优化首页的渲染速度 === 懒加载
+  rollupOptions: {
+    output: {
+      manualChunks(id: any) {
+        if (id.includes('node_modules')) {
+          return 'vendor';
+        }
+        if (id.includes('echarts')) {
+          return 'echarts';
+        }
+      }
+    }
+  },
+
   server: {
     proxy: {
       '/api/': {
